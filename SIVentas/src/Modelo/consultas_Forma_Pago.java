@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.*;
 
 /**
  *
@@ -27,45 +28,37 @@ public class consultas_Forma_Pago extends Conexion {
     public consultas_Forma_Pago()
     {
         con = new Conexion();
-    }
-    
-    private ResultSet consultaResusltados(String sql) {
-        try {
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            rh = ps.executeQuery();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return rh;
-    }
-     private boolean insertarResultados(String sql) {
-        boolean ban = false;
-        try {
-            
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            ban = ps.execute();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return ban;
-    }
-    
-    
+        conex = con.crearConexionNueva();
+    } 
     
     public ResultSet llenarTabla_Marca() {
 
-        sql=("SELECT id_marca,marca FROM marca ORDER BY marca");
-        return consultaResusltados(sql);
+        try{
+            CallableStatement cst = conex.prepareCall("Call GEN_llenarTabla_Marca()");
+            cst.execute();
+            return cst.getResultSet();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
     public boolean consultaRegistrarMarca(String marca, int id_usuario) {
-        sql=("INSERT INTO marca (marca,id_usuario) VALUES ('" + marca + "'," + id_usuario + ")");
-        return insertarResultados(sql);
+     try{
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaRegistrarMarca(?,?)");
+            cst.setInt("id_usuario", id_usuario);
+            cst.setString("marca", marca);
+            return cst.execute();
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
