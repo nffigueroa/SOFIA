@@ -30,32 +30,7 @@ public class consultas_Factura_Anulada extends Conexion{
         con = new Conexion();
         conex = con.crearConexionNueva();
     }
-    
-    private ResultSet consultaResusltados(String sql) {
-        try {
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            rh = ps.executeQuery();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return rh;
-    }
-    private boolean insertarResultados(String sql) {
-        boolean ban = false;
-        try {
-            
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            ban = ps.execute();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return ban;
-    }
-    
+      
     public ResultSet consultaLlenarFacturaAnuladas(int id_sucursal)
     {
         try{
