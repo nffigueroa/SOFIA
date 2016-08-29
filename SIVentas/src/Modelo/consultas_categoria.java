@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,42 +27,31 @@ public class consultas_categoria extends Conexion{
     public consultas_categoria()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
-    
-    private ResultSet consultaResusltados(String sql) {
-        try {
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            rh = ps.executeQuery();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return rh;
-    }
-    private boolean insertarResultados(String sql) {
-        boolean ban = false;
-        try {
-            
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            ban = ps.execute();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return ban;
-    }
-        public ResultSet llenarTabla_Categoria()
+   
+      public ResultSet llenarTabla_Categoria()
         {
-        sql=("SELECT id_categoria,categoria FROM categoria ORDER BY categoria");
-        
-        return consultaResusltados(sql);
+            try {
+                CallableStatement cst = conex.prepareCall("Call GEN_consultaListaCategoria()");
+                cst.execute();
+                return cst.getResultSet();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
       
       public boolean consultaRegistrarCategoria(String categoria,int id_usuario)
         {
-        sql=("INSERT INTO categoria (categoria,id_usuario) VALUES ('"+categoria+"',"+id_usuario+")");
-        return insertarResultados(sql);
+        try {
+                CallableStatement cst = conex.prepareCall("Call GEN_consultaRegistrarCategoria(?,?)");
+                cst.setString("categoria", categoria);
+                cst.setInt("id_usuario", id_usuario);
+                return cst.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 }
