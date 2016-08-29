@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.*;
 
 /**
  *
@@ -28,6 +29,7 @@ public class consultas_Producto extends Conexion{
     public consultas_Producto()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -57,51 +59,94 @@ public class consultas_Producto extends Conexion{
     public ResultSet llenarTabla_Producto(int sucursal)
     {
         
-       sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, PRE.id_presentacion,"
-                + "PRE.presentacion,M.id_marca,M.marca,P.id_sucursal FROM producto AS P, categoria AS C, medicion AS ME , "
-                + "presentacion AS PRE, marca AS M WHERE P.id_sucursal ="+sucursal+" AND P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_presentacion = PRE.id_presentacion AND P.id_marca = M.id_marca ORDER BY nombre_producto");
-        return consultaResusltados(sql);
+       try{
+           CallableStatement cst = conex.prepareCall("Call IVN_llenarTabla_Producto(?)");
+           cst.setInt("id_sucursal", sucursal);
+           cst.execute();
+           return cst.getResultSet();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return null;
+       }
         
     }
     public boolean eliminar_Producto(int ide)
     {
-        sql =("DELETE FROM producto WHERE id_produccto="+ide+"");
-        if(insertarResultados(sql))
-        {
-            return true;}
-        else{
-            return false;}   
+        try{
+           CallableStatement cst = conex.prepareCall("Call IVN_eliminar_Producto(?)");
+           cst.setInt("ide", ide);
+          return  cst.execute();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return false;
+       }
     }
     public ResultSet consultaLLenarComboCategoria()
     {
-        sql=("SELECT categoria FROM CATEGORIA");
-        return consultaResusltados(sql);
+        try{
+           CallableStatement cst = conex.prepareCall("Call IVN_eliminar_Producto()");
+           cst.execute();
+           return cst.getResultSet();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
     public ResultSet consultaLLenarComboMedicion()
     {
-       sql=("SELECT medicion FROM MEDICION");
-        return consultaResusltados(sql);
+       try{
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaLLenarComboMedicion()");
+           cst.execute();
+           return cst.getResultSet();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
     public ResultSet consultaLLenarComboMarca()
     {
-        sql=("SELECT marca FROM MARCA");
-        return consultaResusltados(sql);
+        try{
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaLLenarComboMarca()");
+           cst.execute();
+           return cst.getResultSet();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
     public ResultSet consultaLLenarComboPresentacion()
     {
-        sql=("SELECT presentacion FROM PRESENTACION");
-        return consultaResusltados(sql);
+        try{
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaLLenarComboPresentacion()");
+           cst.execute();
+           return cst.getResultSet();
+       }
+       catch(SQLException e)
+       {
+           e.printStackTrace();
+           return null;
+       }
     }
     
     //CONSULTAR LOS IDS DE LOS COMBOBOX DEL FORMULARIO DE PRODUCTO 
     public Object consultaIDComboCategoria(Object categoria)
     {
         Object id_categoria = null;
-        sql=("SELECT id_categoria FROM CATEGORIA WHERE categoria='"+categoria+"'");
-        rh = consultaResusltados(sql);
         try {
+        CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboCategoria(?)");
+        cst.setObject("categoria", categoria);
+        cst.execute();
+        rh = cst.getResultSet();
             while(rh.next())
             id_categoria = rh.getInt("id_categoria");
             
@@ -114,9 +159,11 @@ public class consultas_Producto extends Conexion{
     public Object consultaIDComboPresentacion(Object presentacion)
     {
         Object id_presentacion = null;
-        sql=("SELECT id_presentacion FROM PRESENTACION WHERE presentacion='"+presentacion+"'");
-        rh = consultaResusltados(sql);
         try {
+        CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboPresentacion(?)");
+        cst.setObject("presentacion", presentacion);
+        cst.execute();
+        rh = cst.getResultSet();
             while(rh.next())
             id_presentacion = rh.getInt(1);
             
@@ -129,9 +176,11 @@ public class consultas_Producto extends Conexion{
     public Object consultaIDComboMedicion(Object medicion)
     {
         Object id_medicion = null;
-        sql=("SELECT id_medicion FROM MEDICION WHERE medicion='"+medicion+"'");
-        consultaResusltados(sql);
-        try {
+       try {
+        CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboMedicion(?)");
+        cst.setObject("medicion", medicion);
+        cst.execute();
+        rh = cst.getResultSet();
             while(rh.next())
             id_medicion = rh.getInt(1);
             
@@ -144,9 +193,11 @@ public class consultas_Producto extends Conexion{
     public Object consultaIDComboMarca(Object marca)
     {
         Object id_marca = null;
-       sql=("SELECT id_marca FROM MARCA WHERE marca='"+marca+"'");
-       rh = consultaResusltados(sql);
         try {
+        CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboMarca(?)");
+        cst.setObject("marca", marca);
+        cst.execute();
+        rh = cst.getResultSet();
             while(rh.next())
             id_marca = rh.getInt(1);
             
@@ -157,84 +208,66 @@ public class consultas_Producto extends Conexion{
         return id_marca;
     }
     
-    public boolean registrarProducto(String nombre,String fecha_creacion,Object usuarioCreacion, Object categoria , Object marca, Object medicion , Object presentacion,Object id_sucursal)
+    public boolean registrarProducto(String nombre,String fecha_creacion,Object usuarioCreacion, Object categoria , Object marca,
+            Object medicion , Object presentacion,Object id_sucursal)
     {
-        sql=("INSERT INTO PRODUCTO (nombre_producto,fecha_creacion,id_usuario_creacion,"
-                + "id_categoria,id_medicion,id_presentacion,id_marca,id_sucursal) VALUES ('"+nombre+"','"+fecha_creacion+"',"
-                + usuarioCreacion+","+categoria+","+medicion+","+presentacion+","+marca+","+id_sucursal+"   )");
-        return insertarResultados(sql);
+        try{
+            CallableStatement cst = conex.prepareCall("Call IVN_registrarProducto(?,?,?,?,?,?,?,?)");
+            cst.setString("nombre", nombre);
+            cst.setString("fecha_creacion", fecha_creacion);
+            cst.setInt("usuarioCreacion", Integer.parseInt(usuarioCreacion.toString()));
+            cst.setInt("categoria", Integer.parseInt(categoria.toString()));
+            cst.setInt("marca", Integer.parseInt(marca.toString()));
+            cst.setInt("medicion", Integer.parseInt(medicion.toString()));
+            cst.setInt("presentacion", Integer.parseInt(presentacion.toString()));
+            cst.setInt("id_sucursal", Integer.parseInt(id_sucursal.toString()));
+            return cst.execute();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public boolean consultaActualizarProducto(Object id_producto,String nombre, Object categoria , Object marca, Object medicion , Object presentacion)
     {
         
         try{
-        sql=("UPDATE PRODUCTO SET nombre_producto='"+nombre+"',id_categoria="+categoria+",id_medicion="+medicion+","
-                + "id_presentacion="+presentacion+", id_marca="+marca+" WHERE id_produccto="+id_producto+"");
+            CallableStatement cst = conex.prepareCall("Call IVN_consultaActualizarProducto(?,?,?,?,?,?)");
+            cst.setInt("id_producto", Integer.parseInt(id_producto.toString()));
+            cst.setString("nombre", nombre);
+            cst.setInt("categoria", Integer.parseInt(categoria.toString()));
+            cst.setInt("marca", Integer.parseInt(marca.toString()));
+            cst.setInt("medicion", Integer.parseInt(medicion.toString()));
+            cst.setInt("presentacion", Integer.parseInt(presentacion.toString()));
+            return cst.execute();
         
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            return false;
         }
-        return insertarResultados(sql);
+
     }
     
     public ResultSet consultaBuscarProducto(int sucursal,String nombre,String opcionBuscar)
     {
-        
-        switch(opcionBuscar){
-                case "Categoria":
-                sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, pre.id_presentacion,"
-                + "pre.presentacion,M.id_marca,M.marca FROM PRODUCTO AS P, CATEGORIA AS C, MEDICION AS ME , "
-                + "PRESENTACION AS PRE, MARCA AS M WHERE P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_sucursal="+sucursal+" AND P.id_presentacion = PRE.id_presentacion AND "
-                + "P.id_marca = M.id_marca AND C.categoria LIKE '"+nombre+"%' ORDER BY C.categoria ");   
-                rh = consultaResusltados(sql);
-                    break;
-                   
-                case "Marca":
-                    sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, pre.id_presentacion,"
-                + "pre.presentacion,M.id_marca,M.marca FROM PRODUCTO AS P, CATEGORIA AS C, MEDICION AS ME , "
-                + "PRESENTACION AS PRE, MARCA AS M WHERE P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_sucursal="+sucursal+" AND P.id_presentacion = PRE.id_presentacion AND "
-                + "P.id_marca = M.id_marca AND M.marca LIKE '"+nombre+"%' ORDER BY M.marca ");   
-                    rh = consultaResusltados(sql);
-                    
-                    break;
-                    
-                case "Nombre":
-                sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, pre.id_presentacion,"
-                + "pre.presentacion,M.id_marca,M.marca FROM PRODUCTO AS P, CATEGORIA AS C, MEDICION AS ME , "
-                + "PRESENTACION AS PRE, MARCA AS M WHERE P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_sucursal="+sucursal+" AND P.id_presentacion = PRE.id_presentacion AND "
-                + "P.id_marca = M.id_marca AND P.nombre_producto LIKE '"+nombre+"%' ORDER BY P.nombre_producto ");                    
-                rh = consultaResusltados(sql);
-                    break;
-                case "Medicion":
-                    sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, pre.id_presentacion,"
-                + "pre.presentacion,M.id_marca,M.marca FROM PRODUCTO AS P, CATEGORIA AS C, MEDICION AS ME , "
-                + "PRESENTACION AS PRE, MARCA AS M WHERE P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_sucursal="+sucursal+" AND P.id_presentacion = PRE.id_presentacion AND "
-                + "P.id_marca = M.id_marca AND ME.medicion LIKE '"+nombre+"%' ORDER BY ME.medicion ");   
-                    rh = consultaResusltados(sql);
-                    break;
-                case "Presentacion":
-                    sql=("select P.id_produccto,P.nombre_producto,P.id_categoria,P.id_medicion,P.id_presentacion,"
-                + "P.id_marca,C.id_categoria,C.categoria,ME.id_medicion,ME.medicion, pre.id_presentacion,"
-                + "pre.presentacion,M.id_marca,M.marca FROM PRODUCTO AS P, CATEGORIA AS C, MEDICION AS ME , "
-                + "PRESENTACION AS PRE, MARCA AS M WHERE P.id_categoria = C.id_categoria AND "
-                + "P.id_medicion = ME.id_medicion AND P.id_sucursal="+sucursal+" AND P.id_presentacion = PRE.id_presentacion AND "
-                + "P.id_marca = M.id_marca AND PRE.presentacion LIKE '"+nombre+"%' ORDER BY PRE.presentacion ");   
-                    rh = consultaResusltados(sql);
-                    break;
+        try{
+            CallableStatement cst = conex.prepareCall("Call IVN_consultaBuscarProducto(?,?,?)");
+            cst.setInt("sucursal", sucursal);
+            cst.setString("nombre", nombre);
+            cst.setString("opcionBuscar", opcionBuscar);
+            cst.execute();
+            return cst.getResultSet();
         }
-        
-        return rh;
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+     
     }
     
     
