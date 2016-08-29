@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
+/**                                                                     
  *
  * @author Nestor1
  */
@@ -56,8 +57,18 @@ public class consultas_cambio_clave extends Modelo.Conexion{
     
     public boolean consultaRegistrarCambioClave(int id_usuario,Object nuevaPassword)
     {
-        sql=("UPDATE usuario SET password="+nuevaPassword+" WHERE id_usuario="+id_usuario+"");
-        return insertarResultados(sql);
+        try
+        {
+            CallableStatement cst = conex.prepareCall("Call US_consultaRegistrarCambioClave(?,?)");
+            cst.setInt("id_usuario", id_usuario);
+            cst.setObject("nuevaPassword", nuevaPassword);
+            return cst.execute();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
     
 }
