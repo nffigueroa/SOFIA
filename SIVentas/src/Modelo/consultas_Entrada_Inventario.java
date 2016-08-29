@@ -32,33 +32,6 @@ public class consultas_Entrada_Inventario extends Conexion{
         conex = con.crearConexionNueva();
     }
     
-    private ResultSet consultaResusltados(String sql) {
-        try {
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-            rh = ps.executeQuery();
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return rh;
-    }
-    private boolean insertarResultados(String sql) {
-        boolean ban = false;
-        try {
-            
-            conex = con.crearConexionNueva();
-            ps = conex.prepareStatement(sql);
-             if(ps.execute())
-                 ban = true;
-             else
-                 ban=false;
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas_informeMasVendido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return true;
-    }
-    
     public ResultSet consultaCantidadYCostoProducto(int id_sucursal)
     {
         try
