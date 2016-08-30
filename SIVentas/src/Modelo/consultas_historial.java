@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,10 +56,15 @@ public class consultas_historial extends Conexion{
     }
     public ResultSet consultaLlenarHistorial(int id_sucursal)
     {
-        sql=("SELECT HISTO.id_historial,HISTO.proceso,USU.usuario,HISTO.fecha_historial,HISTO.hora,"
-                + "HISTO.descripcion_sistema,HISTO.id_usuario,USU.id_usuario,USU.id_sucursal FROM usuario AS USU,historial AS HISTO "
-                + "WHERE USU.id_sucursal="+id_sucursal+" AND HISTO.id_usuario=USU.id_usuario ORDER BY HISTO.proceso");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call US_consultaLlenarHistorial()");
+            cst.setInt("id_sucursal", id_sucursal);
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     

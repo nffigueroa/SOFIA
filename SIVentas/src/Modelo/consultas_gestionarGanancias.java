@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,12 +56,14 @@ public class consultas_gestionarGanancias extends Conexion{
     }
     public ResultSet consultaLlenarTablaInventarioGanacia()
     {
-        sql=("SELECT INVEN.id_producto_inventario,PRO.nombre_producto,MARC.marca,CAT.categoria,PRE.presentacion,MED.medicion,"
-                + "INVEN.cantidad_producto_inventario,INVEN.precio_producto_inventario,INVEN.precio_secundario_producto_inventario,"
-                + "INVEN.iva_producto_inventario,INVEN.utilidad FROM producto_inventario AS INVEN,marca AS MARC,medicion AS MED,presentacion AS PRE,"
-                + "categoria AS CAT,producto AS PRO,sucursal AS SUC, mi_empresa AS EMPRE WHERE INVEN.id_producto=PRO.id_produccto AND "
-                + "PRO.id_marca=MARC.id_marca AND PRO.id_categoria=CAT.id_categoria AND PRO.id_presentacion=PRE.id_presentacion AND PRO.id_medicion=MED.id_medicion");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaLlenarTablaInventarioGanacia()");
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }

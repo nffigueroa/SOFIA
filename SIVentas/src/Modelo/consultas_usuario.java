@@ -6,6 +6,7 @@
 package Modelo;
 
 import Constructores.Constructor_usuario_permiso;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,31 +55,62 @@ public class consultas_usuario extends Conexion {
          return ban;
     }
 
-    public boolean consultaModificarUsuario(int id_usuario, Object nombre, Object apellido, Object cc, Object tel, Object dir, int id_cargo, Object descr, int id_sucursal, Object user, Object pass) {
-       sql=("UPDATE usuario SET nombre_usuario='" + nombre + "', apellido_usuario='" + apellido + "', cc_usuario='" + cc + "',telefono_usuario='" + tel + "'"
-                + ",direccion_usuario='" + dir + "',"
-                + "id_cargo=" + id_cargo + ",descripcion='" + descr + "',id_sucursal=" + id_sucursal + ",usuario='" + user + "', password='" + pass + "' WHERE id_usuario=" + id_usuario + "");
-       return insertarResultados(sql);
+    public boolean consultaModificarUsuario(int id_usuario, Object nombre, Object apellido, Object cc, Object tel,
+            Object dir, int id_cargo, Object descr, int id_sucursal, Object user, Object pass) {
+        try {
+            CallableStatement cst = conex.prepareCall("Call US_consultaModificarUsuario(?,?,?,?,?,?,?,?,?,?,?)");
+            cst.setInt("id_usuario", id_usuario);
+            cst.setObject("nombre", nombre);
+            cst.setObject("apellido", apellido);
+            cst.setObject("apellido", apellido);
+            cst.setObject("cc", cc);
+            cst.setObject("tel", tel);
+            cst.setObject("dir", dir);
+            cst.setInt("id_cargo", id_cargo);
+            cst.setObject("descr", descr);
+            cst.setInt("id_sucursal", id_sucursal);
+            cst.setObject("user", user);
+            cst.setObject("pass", pass);
+            return cst.execute();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Boolean consultaEliminarPermisos(Object id_usuario) {
-        sql=("DELETE FROM permiso_usuario WHERE id_usuario=" + id_usuario + "");
-        return insertarResultados(sql);
+         try {
+            CallableStatement cst = conex.prepareCall("Call US_consultaEliminarPermisos(?)");
+            cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
+            return cst.execute();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public ResultSet consultaPermisoUsuario(Object id_usuario) {
-        sql=("SELECT PER_USU.id_usuario,PER_USU.id_permiso,PER.permiso FROM permiso_usuario"
-                + " AS PER_USU,permiso AS PER"
-                + " WHERE PER_USU.id_permiso=PER.id_permiso AND PER_USU.id_usuario=" + id_usuario + "");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst= conex.prepareCall("Call US_consultaPermisoUsuario(?)");
+            cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Object consultaSelectUsuario(Object cc) {
 
         Object id_usuario = null;
-        sql=("SELECT id_usuario FROM usuario WHERE cc_usuario='" + cc + "'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call US_consultaSelectUsuario(?)");
+           cst.setObject("cc", cc);
+           cst.execute();
+           rh = cst.getResultSet();
             while (rh.next()) {
                 id_usuario = rh.getInt("id_usuario");
             }
@@ -92,12 +124,15 @@ public class consultas_usuario extends Conexion {
 
     public ResultSet consultaLlenarTabla_Usuario(int id_empresa) {
 
-       sql=("SELECT DISTINCT USU.id_usuario,USU.nombre_usuario,USU.apellido_usuario,USU.cc_usuario,"
-                + "USU.telefono_usuario,USU.direccion_usuario,USU.descripcion,"
-                + "USU.fecha_creacion,USU.usuario,SUC.nombre_sucursal,CAR.id_cargo,CAR.cargo,USU.id_cargo,USU.id_sucursal "
-                + "FROM usuario AS USU, sucursal AS SUC ,cargo AS CAR WHERE USU.id_cargo=CAR.id_cargo AND USU.id_sucursal=SUC.id_sucursal"
-                + " AND SUC.id_empresa =" + id_empresa + " ORDER BY USU.nombre_usuario");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call US_consultaLlenarTabla_Usuario(?)");
+            cst.setInt("id_empresa", id_empresa);
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 

@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +28,7 @@ public class consultas_importe extends Conexion{
     public consultas_importe()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -55,26 +57,49 @@ public class consultas_importe extends Conexion{
     }
     public boolean consultaCorteCajaImporte(Object id_importe,int id_sucursal,Object id_corte_caja)
     {
-        sql=("UPDATE importes SET id_corte_caja="+id_corte_caja+" WHERE id_importe="+id_importe+" AND id_sucursal="+id_sucursal+"");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaCorteCajaImporte(?,?,?)");
+            cst.setInt("id_importe", Integer.parseInt(id_importe.toString()));
+            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_corte_caja",Integer.parseInt(id_corte_caja.toString()));
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public ResultSet consultaLLenarComboTipoImporte()
     {
-        sql=("SELECT tipo_importe FROM tipo_importe");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaLLenarComboTipoImporte()");
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     public ResultSet consultaLLenarComboMotivoImporte(Object idTipoImporte)
     {
-        sql=("SELECT motivo_importe FROM motivo_importe WHERE id_tipo_importe="+idTipoImporte+"");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaLLenarComboMotivoImporte(?)");
+            cst.setInt("idTipoImporte", Integer.parseInt(idTipoImporte.toString()));
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
      public Object consultaIDComboTipoImporte(Object tipoImporte)
     {
         Object id_tipo_importe = null;
-        sql=("SELECT id_tipo_importe FROM tipo_importe WHERE tipo_importe='"+tipoImporte+"'");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+           CallableStatement cst = conex.prepareCall("Call CON_consultaIDComboTipoImporte(?)");
+           cst.setInt("tipoImporte", Integer.parseInt(tipoImporte.toString()));
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_tipo_importe = rh.getInt("id_tipo_importe");
             
@@ -87,9 +112,11 @@ public class consultas_importe extends Conexion{
       public Object consultaIDComboMotivoImporte(Object motivoImporte)
     {
         Object id_motivo_importe = null;
-        sql=("SELECT id_motivo_importe FROM motivo_importe WHERE motivo_importe='"+motivoImporte+"'");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+           CallableStatement cst = conex.prepareCall("Call CON_consultaIDComboTipoImporte(?)");
+           cst.setObject("motivoImporte", (motivoImporte));
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_motivo_importe = rh.getInt("id_motivo_importe");
         } catch (SQLException ex) {
@@ -100,11 +127,19 @@ public class consultas_importe extends Conexion{
     }
       public boolean consultaRegistrarImporte(int id_sucursal,Object idTipoImporte, Object motivoImporte, Object importe, Object descripcion)
       {
-          
-          boolean resultado= false;
-          sql=("INSERT INTO importes (id_tipo_importe,id_motivo_importe,importe,descripcion_importe,id_sucursal) VALUES ("+idTipoImporte+","+motivoImporte+""
-                  + ","+importe+",'"+descripcion+"',"+id_sucursal+")");
-          return insertarResultados(sql);
+          try {
+              CallableStatement cst = conex.prepareCall("Call CON_consultaRegistrarImporte(?,?,?,?,?)");
+              cst.setInt("id_sucursal", id_sucursal);
+              cst.setInt("idTipoImporte", Integer.parseInt(idTipoImporte.toString()));
+              cst.setObject("motivoImporte", motivoImporte);
+              cst.setObject("importe", importe);
+              cst.setObject("descripcion", descripcion);
+              return cst.execute();
+          } catch (Exception e) {
+              e.printStackTrace();
+              return false;
+          }
+   
       }
     
 }

@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +29,7 @@ public class consultas_login  extends Conexion{
     public consultas_login()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -59,9 +61,11 @@ public class consultas_login  extends Conexion{
     {
         
          Object psw = null;
-         String sql =("SELECT password FROM usuario WHERE usuario='"+usuario+"'");
-         rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call US_consultasPassword(?)");
+           cst.setObject("usuario", usuario);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             psw = rh.getObject("password");
             
@@ -74,9 +78,11 @@ public class consultas_login  extends Conexion{
     public Object consultasPasswordCambioClave(int usuario)
     {
         Object psw = null;
-         String sql =("SELECT password FROM usuario WHERE id_usuario='"+usuario+"'");
-         rh = consultaResusltados(sql);
-        try {
+         try{
+             CallableStatement cst = conex.prepareCall("Call US_consultasPasswordCambioClave(?)");
+             cst.setInt("usuario",usuario);
+             cst.execute();
+             rh = cst.getResultSet();
             while(rh.next())
             psw = rh.getObject("password");
             
@@ -88,16 +94,28 @@ public class consultas_login  extends Conexion{
     }
     public ResultSet consultasDatosLogeoUsuario(Object usuario)
     {
-        String sql = ("SELECT nombre_usuario,apellido_usuario,cc_usuario,telefono_usuario,usuario,password,id_usuario,id_sucursal,id_cargo FROM usuario WHERE usuario='"+usuario+"'");
-        rh = consultaResusltados(sql);
-        return rh;
+        try {
+            CallableStatement cst = conex.prepareCall("Call US_consultasDatosLogeoUsuario(?)");
+            cst.setObject("usuario", usuario);
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public ResultSet consultasDatosLogeoPorID(Object usuario)
     {
-        String sql = ("SELECT nombre_usuario,apellido_usuario,cc_usuario,telefono_usuario,usuario,password,id_usuario,id_sucursal,id_cargo FROM usuario WHERE id_usuario='"+usuario+"'");
-        rh = consultaResusltados(sql);
-        return rh;
+        try {
+            CallableStatement cst = conex.prepareCall("Call US_consultasDatosLogeoPorID(?)");
+            cst.setInt("usuario",Integer.parseInt(usuario.toString()));
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +28,7 @@ public class consultas_proveedores extends Conexion{
     public consultas_proveedores()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -54,31 +56,57 @@ public class consultas_proveedores extends Conexion{
          return true;
     }
     
-    public boolean consultaModificarProveedor(int id_proveedor, Object empresa, Object contacto, Object tel, Object dir, Object mail, Object id_ciudad, Object nit) {
-       sql=("UPDATE proveedor SET empresa='" + empresa + "', contaco_empresa='" + contacto + "', telefono_proveedor='" + 
-               tel + "',direccion_proveedor='" + dir + "'"+ ",mail_proveedor='" + mail + "',"
-                + "id_ciudad=" + id_ciudad + ",nit_proveedor='" + nit + "' WHERE id_proveedor=" + id_proveedor + "");
-       return insertarResultados(sql);
+    public boolean consultaModificarProveedor(int id_proveedor, Object empresa, Object contacto, Object tel, Object dir, 
+            Object mail, Object id_ciudad, Object nit) {
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaModificarProveedor(?,?,?,?,?,?,?,?)");
+            cst.setInt("id_proveedor", id_proveedor);
+            cst.setObject("empresa", empresa);
+            cst.setObject("contacto", contacto);
+            cst.setObject("tel", tel);
+            cst.setObject("dir", dir);
+            cst.setObject("mail", mail);
+            cst.setInt("id_ciudad", Integer.parseInt(id_ciudad.toString()));
+            cst.setObject("nit", nit);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public Boolean consultaEliminarCategoria(Object id_usuario) {
-        sql=("DELETE FROM permiso_usuario WHERE id_usuario=" + id_usuario + "");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaEliminarCategoria(?)");
+            cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public ResultSet consultaCategoriasProveedor(Object id_proveedor)
     {
-        sql=("SELECT CAT.id_categoria,CAT.id_proveedor,CA.id_categoria,CA.categoria FROM categoria_proveedor AS CAT, categoria AS CA"
-               + " WHERE CAT.id_categoria=CA.id_categoria AND CAT.id_proveedor="+id_proveedor+"");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaCategoriasProveedor(?) ");
+            cst.setInt("id_proveedor", Integer.parseInt(id_proveedor.toString()));
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }       
      
     public Object consultaSelectProveedor(Object nit)
     {
         
         Object id_proveedor = null;
-        sql=("SELECT id_proveedor FROM proveedor WHERE nit_proveedor='"+nit+"'");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaSelectProveedor(?)");
+            cst. setObject("nit", nit);
+            cst. execute();
+            rh = cst.getResultSet();
             while(rh.next())
             id_proveedor = rh.getInt("id_proveedor");
             
@@ -91,20 +119,37 @@ public class consultas_proveedores extends Conexion{
      public ResultSet llenarTabla_Proveedor(int id_sucursal)
     {
         
-        sql=("SELECT DISTINCT PRO.id_proveedor,PRO.empresa,PRO.contaco_empresa,PRO.telefono_proveedor,"
-                + "PRO.direccion_proveedor,PRO.mail_proveedor,PRO.nit_proveedor,CIU.ciudad,"
-                + "CIU.id_ciudad,PRO.id_ciudad,PRO.id_sucursal FROM proveedor AS PRO, ciudad AS CIU WHERE CIU.id_ciudad=PRO.id_ciudad AND "
-                + "PRO.id_sucursal="+id_sucursal+" ORDER BY empresa");
-        return consultaResusltados(sql);
+       try {
+            CallableStatement cst = conex.prepareCall("Call GEN_llenarTabla_Proveedor(?) ");
+            cst.setInt("id_sucursal", id_sucursal);
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         
     }
-     public boolean consultaRegistrarProveedor(int id_sucursal,String fecha_crea,String empresa,String contacto,String telefono, String direccion , String mail, Object id_ciudad , Object nit,int usuario)
+     public boolean consultaRegistrarProveedor(int id_sucursal,String fecha_crea,String empresa,String contacto,String telefono, 
+             String direccion , String mail, Object id_ciudad , Object nit,int usuario)
     {
-        boolean resultado = false;
-        sql=("INSERT INTO proveedor (empresa,contaco_empresa,telefono_proveedor,direccion_proveedor,"
-                + "mail_proveedor,id_ciudad,nit_proveedor,id_usuario_creacion,fecha_creacion,id_sucursal) VALUES ('"+empresa+"','"+contacto+"','"+telefono+"','"
-                + direccion+"','"+mail+"',"+id_ciudad+",'"+nit+"',"+usuario+",'"+fecha_crea+"',"+id_sucursal+")");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaRegistrarProveedor(?,?,?,?,?,?,?,?,?,?)");
+            cst.setInt("id_sucursal", id_sucursal);
+            cst.setString("fecha_crea", fecha_crea);
+            cst.setString("empresa", empresa);
+            cst.setString("contacto", contacto);
+            cst.setString("telefono", telefono);
+            cst.setString("direccion", direccion);
+            cst.setString("mail", mail);
+            cst.setInt("id_ciudad", Integer.parseInt(id_ciudad.toString()));
+            cst. setObject("nit", nit);
+            cst.setInt("usuario", usuario);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
      
      public boolean registrarCategoriaProveedor(Object[]categorias, Object id_proveedor)
@@ -112,8 +157,15 @@ public class consultas_proveedores extends Conexion{
          
          boolean resultado = false;
          for (int i = 0; i < categorias.length; i++) {
-             sql=("INSERT INTO categoria_proveedor (id_categoria,id_proveedor) VALUES ("+categorias[i]+","+id_proveedor+")");  
-             resultado= insertarResultados(sql);
+             try {
+                 CallableStatement cst = conex.prepareCall("Call GEN_registrarCategoriaProveedor(?,?)");
+                 cst.setInt("categoria",Integer.parseInt(categorias[i].toString()));
+                 cst.setInt("id_proveedor", Integer.parseInt(id_proveedor.toString()));
+                 resultado = cst.execute();
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 return false;
+             }
          }
          return resultado;
      }
@@ -121,22 +173,35 @@ public class consultas_proveedores extends Conexion{
     public ResultSet llenarTabla_Categoria()
     {
         
-        sql=("SELECT DISTINCT id_categoria,categoria FROM categoria");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaLLenarComboCategoria()");
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         
     }
       public ResultSet llenarComboCidad_Proveedor()
     {
-        sql=("SELECT ciudad FROM CIUDAD");
-        
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_llenarComboCidad_Mi_Sucursal()");
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
      public Object consultaIDComboCiudad(Object ciudad)
     {
         Object id_categoria = null;
-        sql=("SELECT id_ciudad FROM CIUDAD WHERE ciudad='"+ciudad+"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboCiudad(?)");
+           cst.setObject("ciudad", ciudad);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_categoria = rh.getInt("id_ciudad");
             
@@ -149,13 +214,15 @@ public class consultas_proveedores extends Conexion{
     
      public boolean eliminar_Proveedor(int ide)
     {
-        
-        if(insertarResultados("DELETE FROM proveedor WHERE id_proveedor="+ide+""))
-        {
-            insertarResultados("DELETE FROM categoria_proveedor WHERE id_proveedor="+ide+"");
-            return true;}
-        else{
-            return false;}   
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_eliminar_proveedor(?)");
+            cst. setInt("ide", ide);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+ 
     }
      
      public ResultSet buscarProveedor(int id_sucursal,String combo , Object texto)

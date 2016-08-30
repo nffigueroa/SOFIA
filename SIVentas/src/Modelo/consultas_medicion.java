@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ public class consultas_medicion extends Conexion{
     public consultas_medicion()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -54,14 +56,28 @@ public class consultas_medicion extends Conexion{
     }
         public ResultSet llenarTabla_Medicion(int id_sucursal)
         {
-        sql=("SELECT id_medicion,medicion FROM medicion WHERE id_sucursal="+id_sucursal+" ORDER BY medicion");
-        
-        return consultaResusltados(sql);
+            try {
+                CallableStatement cst = conex.prepareCall("Call GEN_llenarTabla_Medicion(?)");
+                cst.setInt("id_sucursal", id_sucursal);
+                cst.execute();
+                return cst.getResultSet();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
       
       public boolean consultaRegistrarMedicion(int id_sucursal,String medicion,int id_usuario)
         {
-        sql=("INSERT INTO medicion (medicion,id_usuario,id_sucursal) VALUES ('"+medicion+"',"+id_usuario+","+id_sucursal+")");
-        return insertarResultados(sql);
+        try {
+                CallableStatement cst = conex.prepareCall("Call GEN_consultaRegistrarMedicion(?,?,?)");
+                cst.setInt("id_sucursal", id_sucursal);
+                cst.setString("medicion", medicion);
+                cst.setInt("id_usuario", id_usuario);
+                return cst.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 }
