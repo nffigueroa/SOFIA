@@ -8,10 +8,10 @@ package Vista;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Proveedor;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_entradaSalidaInventarioInforme;
-import Controlador.Funciones_frm_Proveedores;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_entradaSalidaInventarioInforme;
+import BL.Funciones_frm_Proveedores;
 import Fuentes.MiRender;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -100,7 +100,7 @@ public String []columnas_inventario = new String[30];
      
       private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -109,7 +109,7 @@ public String []columnas_inventario = new String[30];
       private void cargarTablaInventario()
     {
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_entradaSalidaInventarioInforme n = new Funciones_entradaSalidaInventarioInforme();
+        BL.Funciones_entradaSalidaInventarioInforme n = new Funciones_entradaSalidaInventarioInforme();
         consultarDatosUsuario();
         consultarDatosMiEmpresa();
         try{
@@ -135,7 +135,7 @@ public String []columnas_inventario = new String[30];
        private void cargarTablaSalidaProducto()
     {
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_entradaSalidaInventarioInforme n = new Funciones_entradaSalidaInventarioInforme();
+        BL.Funciones_entradaSalidaInventarioInforme n = new Funciones_entradaSalidaInventarioInforme();
         consultarDatosUsuario();
         consultarDatosMiEmpresa();
         try{

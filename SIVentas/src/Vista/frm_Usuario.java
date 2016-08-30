@@ -7,11 +7,11 @@ package Vista;
 
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_Proveedores;
-import Controlador.Funciones_frm_Usuario;
-import Controlador.Funciones_frm_clientes;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_Proveedores;
+import BL.Funciones_frm_Usuario;
+import BL.Funciones_frm_clientes;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import javafx.scene.layout.Border;
@@ -52,7 +52,7 @@ public class frm_Usuario extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -60,7 +60,7 @@ public class frm_Usuario extends javax.swing.JInternalFrame {
     {
         consultarDatosUsuario();
         Object[]items_ciudad = null;
-        Controlador.Funciones_frm_Usuario fun = new Funciones_frm_Usuario();
+        BL.Funciones_frm_Usuario fun = new Funciones_frm_Usuario();
         fun.llenarComboCargo();
         TitledBorder borde = new TitledBorder(new EtchedBorder(),"Buscar Usuario");
         pan_medio.setBorder(borde);
@@ -81,7 +81,7 @@ public class frm_Usuario extends javax.swing.JInternalFrame {
     
     private void llenarTablaCategoria()
     {
-        Controlador.Funciones_frm_Usuario con = new Controlador.Funciones_frm_Usuario();
+        BL.Funciones_frm_Usuario con = new BL.Funciones_frm_Usuario();
         tbl_permiso.setModel(con.llenarTablaPermiso());
         JCheckBox che = new JCheckBox();
         tbl_permiso.getColumnModel().getColumn(2).setCellEditor( new DefaultCellEditor(che) );
@@ -234,7 +234,7 @@ public class frm_Usuario extends javax.swing.JInternalFrame {
           try{
           Object[]permisos = null;
           consultarDatosUsuario();
-          Controlador.Funciones_frm_Usuario fun = new Funciones_frm_Usuario();
+          BL.Funciones_frm_Usuario fun = new Funciones_frm_Usuario();
           permisos=fun.permisosUsuario(tbl_usuario.getValueAt(tbl_usuario.getSelectedRow(), 0));
            for (int i = 0; i < tbl_permiso.getRowCount(); i++) {
               for (int j = 0; j < permisos.length; j++) {

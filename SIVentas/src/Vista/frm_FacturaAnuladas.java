@@ -6,8 +6,8 @@
 package Vista;
 
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_CortesCaja;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_CortesCaja;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import javax.swing.border.EtchedBorder;
@@ -73,14 +73,14 @@ public class frm_FacturaAnuladas extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
     private void cargarTable() 
     {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_Factura_Anulada n = new Controlador.Funciones_frm_Factura_Anulada();
+        BL.Funciones_frm_Factura_Anulada n = new BL.Funciones_frm_Factura_Anulada();
         
         try{
             parametrosTabla();
@@ -117,7 +117,7 @@ public class frm_FacturaAnuladas extends javax.swing.JInternalFrame {
             ex.printStackTrace();
         }  
         try{
-        Controlador.Funciones_frm_Factura_Anulada n = new Controlador.Funciones_frm_Factura_Anulada();
+        BL.Funciones_frm_Factura_Anulada n = new BL.Funciones_frm_Factura_Anulada();
         tbl_Facturas_Anuladas.setModel(n.buscarFacturaAnulada(usuario_activo.getId_sucursal(),txt_buscar_historial.getText(),cmb_buscar_por_historial.getSelectedItem().toString(),columnas, ancho_columnas));
         }
         catch(Exception ex) 

@@ -7,9 +7,9 @@ package Vista;
 
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_MiSucursal;
-import Controlador.Funciones_frm_Proveedores;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_MiSucursal;
+import BL.Funciones_frm_Proveedores;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -61,7 +61,7 @@ public final class frm_Mi_Sucursal extends javax.swing.JInternalFrame {
     }
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
      
@@ -96,7 +96,7 @@ public final class frm_Mi_Sucursal extends javax.swing.JInternalFrame {
      private void cargarTable() 
     {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_MiSucursal n = new Funciones_frm_MiSucursal();
+        BL.Funciones_frm_MiSucursal n = new Funciones_frm_MiSucursal();
         
         try{
             consultarDatosMiEmpresa();

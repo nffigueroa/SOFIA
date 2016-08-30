@@ -8,9 +8,9 @@ package Vista;
 import Constructores.Constructo_Cantidad_Productos_Vendido;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_MasVendido;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_MasVendido;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
@@ -72,7 +72,7 @@ public class frm_MasVendidoInforme extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -81,19 +81,19 @@ public class frm_MasVendidoInforme extends javax.swing.JInternalFrame {
     private void cargarCantidadProductos(Object sucursal)
     {
         consultarDatosUsuario();
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
         int id_sucur= Integer.parseInt(fun.consultaIdSucursal(sucursal).toString());
         producto_vendido = fun.llenarMasVendido(id_sucur);
     }
      private void cargarCantidadProductosXEmpresa()
     {
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
         producto_vendido = fun.llenarMasVendidoXEmpresa(mi_empresa.getId_empresa());
     }
     
     private void cargarTable()
     {
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
         consultarDatosUsuario();
         consultarDatosMiEmpresa();
@@ -117,7 +117,7 @@ public class frm_MasVendidoInforme extends javax.swing.JInternalFrame {
     }
     private void cargarTableXSucursal(Object sucursal)
     {
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
         cargarCantidadProductos(sucursal);
         consultarDatosMiEmpresa();
@@ -150,7 +150,7 @@ public class frm_MasVendidoInforme extends javax.swing.JInternalFrame {
     }
     private void graficarDatos()
     {
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
             try{
                 DefaultPieDataset data = new DefaultPieDataset();
                 for (int i = 0; i < id_producto.length; i++) {

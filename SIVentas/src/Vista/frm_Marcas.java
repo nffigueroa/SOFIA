@@ -7,9 +7,9 @@ package Vista;
 
 import Constructores.Constructor_Usuario;
 import Constructores.Constructor_usuario_permiso;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_forma_pago;
-import Controlador.Funciones_frm_clientes;
+import BL.Funciones_Generales;
+import BL.Funciones_forma_pago;
+import BL.Funciones_frm_clientes;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
@@ -38,7 +38,7 @@ public String []columnas = new String[2];
     }
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
      private void parametrosTabla()

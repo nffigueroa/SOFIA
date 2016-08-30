@@ -8,7 +8,7 @@ package Vista;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
 import Constructores.Contructor_Cliente_Seleccionado;
-import Controlador.Funciones_Generales;
+import BL.Funciones_Generales;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -68,7 +68,7 @@ public class frm_CuentasPagar extends javax.swing.JInternalFrame {
     }
 
     private void consultarDatosUsuario() {
-        Controlador.Funciones_Generales funciones_producto = new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto = new Funciones_Generales();
         usuario_activo = funciones_producto.usuario(user);
     }
 
@@ -79,7 +79,7 @@ public class frm_CuentasPagar extends javax.swing.JInternalFrame {
 
     private void cargarTable() {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_cuentasPagar n = new Controlador.Funciones_frm_cuentasPagar();
+        BL.Funciones_frm_cuentasPagar n = new BL.Funciones_frm_cuentasPagar();
 
         try {
             parametrosTabla();

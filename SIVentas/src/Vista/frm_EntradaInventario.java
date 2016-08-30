@@ -5,9 +5,10 @@
  */
 package Vista;
 
+import BL.Funciones_Generales;
+import BL.Funciones_Entrada_Inventario;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_frm_producto;
-import Controlador.*;
+import BL.Funciones_frm_producto;
 import java.awt.Point;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class frm_EntradaInventario extends javax.swing.JInternalFrame {
     
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -417,7 +418,7 @@ public class frm_EntradaInventario extends javax.swing.JInternalFrame {
     {
         consultarDatosUsuario();
         llenarOpciones();
-        Controlador.Funciones_Entrada_Inventario descontarCantidad = new Funciones_Entrada_Inventario();
+        BL.Funciones_Entrada_Inventario descontarCantidad = new Funciones_Entrada_Inventario();
         Object seleccion = new Object();
         seleccion = JOptionPane.showInputDialog(null,"Seleccione opcion","Descontar Producto",JOptionPane.QUESTION_MESSAGE,null,opciones,opciones[0]);
         float cantidad = Float.parseFloat(JOptionPane.showInputDialog("INGRESE CANTIDAD"));

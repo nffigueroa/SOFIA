@@ -9,11 +9,11 @@ import Constructores.Constructo_Cantidad_Productos_Vendido;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
 import Constructores.Constructor_venta_Diaria;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_MasVendido;
-import Controlador.Funciones_frm_factura;
-import Controlador.Funciones_frm_venta_diaria;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_MasVendido;
+import BL.Funciones_frm_factura;
+import BL.Funciones_frm_venta_diaria;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -100,7 +100,7 @@ public class frm_venta_diaria_informe extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -154,7 +154,7 @@ public class frm_venta_diaria_informe extends javax.swing.JInternalFrame {
     }
     private void cargarTable()
     {
-        Controlador.Funciones_frm_venta_diaria fun = new Funciones_frm_venta_diaria();
+        BL.Funciones_frm_venta_diaria fun = new Funciones_frm_venta_diaria();
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
         try{
             parametrosTabla();
@@ -230,7 +230,7 @@ public class frm_venta_diaria_informe extends javax.swing.JInternalFrame {
         }
         else
         {
-      Controlador.Funciones_frm_venta_diaria fun = new Funciones_frm_venta_diaria();
+      BL.Funciones_frm_venta_diaria fun = new Funciones_frm_venta_diaria();
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
         try{
             parametrosTabla();

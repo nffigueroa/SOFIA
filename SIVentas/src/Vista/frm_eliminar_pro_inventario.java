@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package Vista;
-import Controlador.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 

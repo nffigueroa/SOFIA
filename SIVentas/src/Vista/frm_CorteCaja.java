@@ -7,11 +7,11 @@ package Vista;
 
 import Constructores.Constructor_Usuario;
 import Constructores.Contructor_CortesCaja;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_CajonDinero;
-import Controlador.Funciones_frm_CortesCaja;
-import Controlador.Funciones_frm_clientes;
-import Controlador.Funciones_frm_factura;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_CajonDinero;
+import BL.Funciones_frm_CortesCaja;
+import BL.Funciones_frm_clientes;
+import BL.Funciones_frm_factura;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -72,7 +72,7 @@ public class frm_CorteCaja extends javax.swing.JInternalFrame {
         llenarTotalesImporte();
         txt_total_egresos.setText(String.valueOf(formateador.format(corte_caja.getTotal_importe_egreso())));
         txt_total_ingresos.setText(String.valueOf(formateador.format(corte_caja.getTotal_importe_ingreso())));
-        Controlador.Funciones_Generales fun = new Funciones_Generales();
+        BL.Funciones_Generales fun = new Funciones_Generales();
         efectivo=fun.efectivoInicial(usuario_activo.getId_sucursal());
         id_corte=fun.IdCorteInicial(usuario_activo.getId_sucursal());
         efetivo_ini=efectivo;
@@ -83,7 +83,7 @@ public class frm_CorteCaja extends javax.swing.JInternalFrame {
     
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
      
@@ -154,13 +154,13 @@ public class frm_CorteCaja extends javax.swing.JInternalFrame {
       private void llenarTotales()
       {
           consultarDatosUsuario();
-          Controlador.Funciones_Generales fun = new Funciones_Generales();
+          BL.Funciones_Generales fun = new Funciones_Generales();
           corte_caja=fun.corte_caja_totales(usuario_activo.getId_sucursal());
       }
       private void llenarTotalesImporte()
       {
           consultarDatosUsuario();
-          Controlador.Funciones_Generales fun = new Funciones_Generales();
+          BL.Funciones_Generales fun = new Funciones_Generales();
           corte_caja=fun.importes_totales(usuario_activo.getId_sucursal());
       }
     

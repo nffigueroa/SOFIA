@@ -7,8 +7,8 @@ package Vista;
 
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_CortesCaja;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_CortesCaja;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -68,7 +68,7 @@ public class frm_Control_Sesion extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -81,7 +81,7 @@ public class frm_Control_Sesion extends javax.swing.JInternalFrame {
     private void cargarTable() 
     {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_controlSesion n = new Controlador.Funciones_frm_controlSesion();
+        BL.Funciones_frm_controlSesion n = new BL.Funciones_frm_controlSesion();
         
         try{
             parametrosTabla();
@@ -108,7 +108,7 @@ public class frm_Control_Sesion extends javax.swing.JInternalFrame {
     private void cargarTableBuscar() 
     {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_controlSesion n = new Controlador.Funciones_frm_controlSesion();
+        BL.Funciones_frm_controlSesion n = new BL.Funciones_frm_controlSesion();
         
         try{
             parametrosTabla();

@@ -7,9 +7,9 @@ package Vista;
 
 import Constructores.Constructor_Usuario;
 import Constructores.Constructor_usuario_permiso;
-import Controlador.Funciones_Cambio_Clave;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_Login;
+import BL.Funciones_Cambio_Clave;
+import BL.Funciones_Generales;
+import BL.Funciones_Login;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -69,19 +69,19 @@ public class frm_Administrador extends javax.swing.JFrame{
     private void registrarInicioSesion()
     {
         consultarDatosUsuario();
-        Controlador.Funciones_Generales fun= new Funciones_Generales();
+        BL.Funciones_Generales fun= new Funciones_Generales();
         fun.registrarSesion(usuario_activo.getId_usuario());
     }
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
    
     private void registrarEfectivoInicial()
     {
         float efectivo=0;
-        Controlador.Funciones_Generales fun = new Funciones_Generales();
+        BL.Funciones_Generales fun = new Funciones_Generales();
         if(fun.efectivoInicial(usuario_activo.getId_sucursal())==0)
         {
             efectivo= Float.parseFloat(JOptionPane.showInputDialog(null, "EFECTIVO INICIAL? $"));
@@ -298,7 +298,7 @@ public class frm_Administrador extends javax.swing.JFrame{
     private void cambio_clave()
     {
        consultarDatosUsuario();
-       Controlador.Funciones_Cambio_Clave fun = new Funciones_Cambio_Clave();
+       BL.Funciones_Cambio_Clave fun = new Funciones_Cambio_Clave();
        fun.funcionCambiar_Clave(usuario_activo.getId_usuario());
     }
 

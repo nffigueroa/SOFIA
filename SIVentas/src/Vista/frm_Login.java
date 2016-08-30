@@ -5,7 +5,7 @@
  */
 package Vista;
 
-import Controlador.Funciones_Login;
+import BL.Funciones_Login;
 //import Fuentes.EncriptadorPassword;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -63,7 +63,7 @@ public class frm_Login extends javax.swing.JFrame {
     }
 
     private void comprobarContrasena() {
-        Controlador.Funciones_Login log = new Funciones_Login();
+        BL.Funciones_Login log = new Funciones_Login();
         String pwd = String.valueOf(txt_password.getPassword());
         if (log.verificarUsuario(txt_usuario.getText(), pwd)) {
 //            JOptionPane.showMessageDialog(null, "paso");

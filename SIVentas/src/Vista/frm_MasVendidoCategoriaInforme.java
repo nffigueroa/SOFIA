@@ -9,10 +9,10 @@ import Constructores.Constructo_Cantidad_Productos_Vendido;
 import Constructores.Constructor_Cantidad_Categoria_Vendido;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_MasVendido;
-import Controlador.Funciones_frm_VentasCategoria;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_MasVendido;
+import BL.Funciones_frm_VentasCategoria;
 import java.text.SimpleDateFormat;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -58,7 +58,7 @@ public class frm_MasVendidoCategoriaInforme extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -71,13 +71,13 @@ public class frm_MasVendidoCategoriaInforme extends javax.swing.JInternalFrame {
     private void cargarCantidadProductos()
     {
         consultarDatosUsuario();
-        Controlador.Funciones_frm_VentasCategoria fun = new Funciones_frm_VentasCategoria();
+        BL.Funciones_frm_VentasCategoria fun = new Funciones_frm_VentasCategoria();
         producto_vendido = fun.llenarMasVendido(usuario_activo.getId_sucursal());
     }
     
     private void cargarTable()
     {
-        Controlador.Funciones_frm_VentasCategoria fun = new Funciones_frm_VentasCategoria();
+        BL.Funciones_frm_VentasCategoria fun = new Funciones_frm_VentasCategoria();
            //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
         cargarCantidadProductos();
         try{
@@ -110,7 +110,7 @@ public class frm_MasVendidoCategoriaInforme extends javax.swing.JInternalFrame {
     }
     private void graficarDatos()
     {
-        Controlador.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
+        BL.Funciones_frm_MasVendido fun = new Funciones_frm_MasVendido();
             try{
                 DefaultPieDataset data = new DefaultPieDataset();
                 for (int i = 0; i < id_categoria.length; i++) {

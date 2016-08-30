@@ -9,14 +9,14 @@ import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
 import Constructores.Contructor_Cliente_Seleccionado;
 import java.text.SimpleDateFormat;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
 import java.text.DecimalFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import Controlador.Funciones_frm_factura;
+import BL.Funciones_frm_factura;
 import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import javax.swing.border.EtchedBorder;
@@ -65,7 +65,7 @@ public class frm_Factura extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
     private void inicializarForm()

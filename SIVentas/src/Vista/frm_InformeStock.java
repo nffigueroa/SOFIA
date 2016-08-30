@@ -8,9 +8,9 @@ package Vista;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Proveedor;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_informeStock;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_informeStock;
 import Fuentes.MiRender;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -118,7 +118,7 @@ public class frm_InformeStock extends javax.swing.JInternalFrame {
     }
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -172,7 +172,7 @@ public class frm_InformeStock extends javax.swing.JInternalFrame {
     
     private void datosProveedor()
     {
-        Controlador.Funciones_frm_informeStock fun = new Funciones_frm_informeStock();
+        BL.Funciones_frm_informeStock fun = new Funciones_frm_informeStock();
         proveedor = fun.datosProveedor(tbl_posiblees_proveedores.getValueAt(tbl_posiblees_proveedores.getSelectedRow(), 0));
         JOptionPane.showMessageDialog(null, "CONTACTO: "+proveedor.getContacto_empresa()+" \n MAIL: "
                 + ""+proveedor.getMail_Proveedor()+"\n DIRECCION: "+proveedor.getDireccion_proveedor()+"\n TELEFONO: "+proveedor.getTelefono()," \n DATOS DE CONTACTO " ,1);

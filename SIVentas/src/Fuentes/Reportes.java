@@ -1,6 +1,6 @@
 package Fuentes;
 
-import Modelo.Consultas_Generales;
+import DA.Consultas_Generales;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

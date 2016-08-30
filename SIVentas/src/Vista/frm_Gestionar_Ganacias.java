@@ -9,10 +9,10 @@ import Constructores.Constructor_Clientes;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
 import Constructores.Contructor_Cliente_Seleccionado;
-import Controlador.Funciones_Entrada_Inventario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_clientes;
-import Controlador.Funciones_frm_cuentasCobrar;
+import BL.Funciones_Entrada_Inventario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_clientes;
+import BL.Funciones_frm_cuentasCobrar;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -121,7 +121,7 @@ public class frm_Gestionar_Ganacias extends javax.swing.JInternalFrame {
     
    
     private void consultarDatosUsuario() {
-        Controlador.Funciones_Generales funciones_producto = new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto = new Funciones_Generales();
         usuario_activo = funciones_producto.usuario(user);
     }
 

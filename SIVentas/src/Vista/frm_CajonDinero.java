@@ -6,8 +6,8 @@
 package Vista;
 
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_CajonDinero;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_CajonDinero;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JOptionPane;
@@ -38,7 +38,7 @@ public class frm_CajonDinero extends javax.swing.JInternalFrame {
    }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
     private void inicializarForm()
@@ -47,7 +47,7 @@ public class frm_CajonDinero extends javax.swing.JInternalFrame {
         Object[] itemsTipoImporte = null;
         TitledBorder borde2 = new TitledBorder(new EtchedBorder(),"IMPORTES");
         pan_central.setBorder(borde2);
-        Controlador.Funciones_frm_CajonDinero fun = new Funciones_frm_CajonDinero();
+        BL.Funciones_frm_CajonDinero fun = new Funciones_frm_CajonDinero();
         itemsTipoImporte=fun.llenarComboTpoimporte();
           for (int h = 0; h < itemsTipoImporte.length; h++) {
             cmb_tipo_importe.addItem(itemsTipoImporte[h]);
@@ -60,7 +60,7 @@ public class frm_CajonDinero extends javax.swing.JInternalFrame {
     {
         cmb_motivo_importe.removeAllItems();
         Object[] MotivoImporte=null;
-        Controlador.Funciones_frm_CajonDinero fun = new Funciones_frm_CajonDinero();
+        BL.Funciones_frm_CajonDinero fun = new Funciones_frm_CajonDinero();
         Object tipo_importe=null;
         tipo_importe= cmb_tipo_importe.getSelectedItem();
         MotivoImporte=fun.llenarComboMotivoImporte(tipo_importe);

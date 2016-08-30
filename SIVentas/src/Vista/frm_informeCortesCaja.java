@@ -9,9 +9,9 @@ import Constructores.Constructor_Clientes;
 import Constructores.Constructor_Mi_empresa;
 import Constructores.Constructor_Usuario;
 import Constructores.Contructor_Cliente_Seleccionado;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_clientes;
-import Controlador.Funciones_frm_cuentasCobrar;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_clientes;
+import BL.Funciones_frm_cuentasCobrar;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -111,7 +111,7 @@ public class frm_informeCortesCaja extends javax.swing.JInternalFrame {
       {
           int id_credito = 0;
           id_credito = Integer.parseInt(lbl_id_credito.getText());
-          Controlador.Funciones_frm_cuentasCobrar cun = new Funciones_frm_cuentasCobrar();
+          BL.Funciones_frm_cuentasCobrar cun = new Funciones_frm_cuentasCobrar();
           float recibe=0,cuota = (Float.parseFloat(String.valueOf(cun.funcionValorMensualCredito(id_credito))));
           Float cambio;   
           Object aux2 ;
@@ -123,7 +123,7 @@ public class frm_informeCortesCaja extends javax.swing.JInternalFrame {
       }
 
     private void consultarDatosUsuario() {
-        Controlador.Funciones_Generales funciones_producto = new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto = new Funciones_Generales();
         usuario_activo = funciones_producto.usuario(user);
     }
 
@@ -134,7 +134,7 @@ public class frm_informeCortesCaja extends javax.swing.JInternalFrame {
 
     private void cargarTable() {
         //Metodo para llenar la tabla producto con los parametros, nombre de columnas y columnas que quiero eliminar
-        Controlador.Funciones_frm_cuentasCobrar n = new Controlador.Funciones_frm_cuentasCobrar();
+        BL.Funciones_frm_cuentasCobrar n = new BL.Funciones_frm_cuentasCobrar();
 
         try {
             parametrosTabla();
@@ -158,7 +158,7 @@ public class frm_informeCortesCaja extends javax.swing.JInternalFrame {
     private void buscarCredito() {
         String comboBox = "";
         comboBox = cmb_buscar_por.getSelectedItem().toString();
-        Controlador.Funciones_frm_cuentasCobrar n = new Controlador.Funciones_frm_cuentasCobrar();
+        BL.Funciones_frm_cuentasCobrar n = new BL.Funciones_frm_cuentasCobrar();
         consultarDatosUsuario();
         consultarDatosMiEmpresa();
         parametrosTabla();
@@ -174,10 +174,10 @@ public class frm_informeCortesCaja extends javax.swing.JInternalFrame {
     }
 
     private void abonarCredito() {
-        Controlador.Funciones_Generales fun = new Funciones_Generales();
+        BL.Funciones_Generales fun = new Funciones_Generales();
         cliente = fun.llenarConstructorClientePorId(Integer.parseInt(tbl_cortes.getModel().getValueAt(tbl_cortes.getSelectedRow(), 14).toString()));
         txt_cliente_abono.setText(cliente.getNombre()+" "+cliente.getApellido());
-        Controlador.Funciones_frm_cuentasCobrar cun = new Funciones_frm_cuentasCobrar();
+        BL.Funciones_frm_cuentasCobrar cun = new Funciones_frm_cuentasCobrar();
         dlg_abonar.setLocationRelativeTo(null);
         dlg_abonar.setVisible(true);
         dlg_abonar.setTitle("Abonar");

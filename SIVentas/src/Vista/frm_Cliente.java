@@ -5,8 +5,9 @@
  */
 package Vista;
 
+import BL.Funciones_Generales;
+import BL.Funciones_frm_clientes;
 import Constructores.Constructor_Usuario;
-import Controlador.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
@@ -40,7 +41,7 @@ public class frm_Cliente extends javax.swing.JInternalFrame {
     
      private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
     
@@ -112,7 +113,7 @@ public class frm_Cliente extends javax.swing.JInternalFrame {
         
         txt_id_cliente.setVisible(false);
          Object [] items_ciudad;
-        Controlador.Funciones_frm_clientes funciones_cliente= new Controlador.Funciones_frm_clientes();
+        BL.Funciones_frm_clientes funciones_cliente= new BL.Funciones_frm_clientes();
         
         items_ciudad= funciones_cliente.llenarComboCiudad();
         for (int t = 0; t < items_ciudad.length; t++) {

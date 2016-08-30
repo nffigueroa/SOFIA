@@ -6,9 +6,9 @@
 package Vista;
 
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_Generales;
-import Controlador.Funciones_frm_Proveedores;
-import Controlador.Funciones_frm_Usuario;
+import BL.Funciones_Generales;
+import BL.Funciones_frm_Proveedores;
+import BL.Funciones_frm_Usuario;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -46,14 +46,14 @@ public class frm_Proveedores extends javax.swing.JInternalFrame {
     
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
     }
     
     private void inicializarForm()
     {
         Object[]items_ciudad = null;
-        Controlador.Funciones_frm_Proveedores fun = new Funciones_frm_Proveedores();
+        BL.Funciones_frm_Proveedores fun = new Funciones_frm_Proveedores();
         fun.llenarComboCiudad();
         TitledBorder borde = new TitledBorder(new EtchedBorder(),"Buscar");
         pan_medio.setBorder(borde);
@@ -68,7 +68,7 @@ public class frm_Proveedores extends javax.swing.JInternalFrame {
     
     private void llenarTablaCategoria()
     {
-        Controlador.Funciones_frm_Proveedores con = new Controlador.Funciones_frm_Proveedores();
+        BL.Funciones_frm_Proveedores con = new BL.Funciones_frm_Proveedores();
         tbl_categoria.setModel(con.llenarTablaCategoria());
         JCheckBox che = new JCheckBox();
         tbl_categoria.getColumnModel().getColumn(2).setCellEditor( new DefaultCellEditor(che) );
@@ -204,7 +204,7 @@ public class frm_Proveedores extends javax.swing.JInternalFrame {
           try{
           Object[]permisos = null;
           consultarDatosUsuario();
-          Controlador.Funciones_frm_Proveedores fun = new Funciones_frm_Proveedores();
+          BL.Funciones_frm_Proveedores fun = new Funciones_frm_Proveedores();
           permisos=fun.categoriasProveedor(tbl_proveedor.getValueAt(tbl_proveedor.getSelectedRow(), 0));
            for (int i = 0; i < tbl_categoria.getRowCount(); i++) {
               for (int j = 0; j < permisos.length; j++) {

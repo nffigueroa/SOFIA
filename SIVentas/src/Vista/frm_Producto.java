@@ -5,12 +5,14 @@
  */
 package Vista;
 
+import BL.Funciones_frm_categoria;
+import BL.Funciones_forma_pago;
+import BL.Funciones_Generales;
 import Constructores.Constructor_Usuario;
-import Controlador.Funciones_frm_producto;
+import BL.Funciones_frm_producto;
 import javax.swing.table.TableModel;
 import java.lang.*;
 import javax.swing.JOptionPane;
-import Controlador.*;
 import groovy.xml.Entity;
 import java.sql.ResultSet;
 import javax.swing.border.EtchedBorder;
@@ -40,7 +42,7 @@ public class frm_Producto extends javax.swing.JInternalFrame {
     }
     private void consultarDatosUsuario()
     {
-        Controlador.Funciones_Generales funciones_producto= new Funciones_Generales();
+        BL.Funciones_Generales funciones_producto= new Funciones_Generales();
         usuario_activo=funciones_producto.usuario(user);
         
     }
@@ -60,7 +62,7 @@ public class frm_Producto extends javax.swing.JInternalFrame {
         
         txt_id_producto.setVisible(false);
         Object [] items_categoria,items_medicion,items_marca,items_presentacion;
-        Controlador.Funciones_frm_producto funciones_producto= new Funciones_frm_producto();
+        BL.Funciones_frm_producto funciones_producto= new Funciones_frm_producto();
         
         items_categoria= funciones_producto.llenarComboCategoria();
         for (int t = 0; t < items_categoria.length; t++) {
@@ -83,7 +85,7 @@ public class frm_Producto extends javax.swing.JInternalFrame {
     private void actualizarComboCategoria()
     {
          Object[] items_categoria, items_medicion, items_marca, items_presentacion;
-        Controlador.Funciones_frm_producto funciones_producto = new Funciones_frm_producto();
+        BL.Funciones_frm_producto funciones_producto = new Funciones_frm_producto();
 
         items_categoria = funciones_producto.llenarComboCategoria();
         for (int t = 0; t < items_categoria.length; t++) {
@@ -94,7 +96,7 @@ public class frm_Producto extends javax.swing.JInternalFrame {
     private void actualizarComboMarca()
     {
          Object[] items_categoria, items_medicion, items_marca, items_presentacion;
-        Controlador.Funciones_frm_producto funciones_producto = new Funciones_frm_producto();
+        BL.Funciones_frm_producto funciones_producto = new Funciones_frm_producto();
 
          items_marca= funciones_producto.llenarComboMarca();
         for (int t = 0; t < items_marca.length; t++) {
