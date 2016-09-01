@@ -33,7 +33,7 @@ public class Consultas_informeMasVendido extends Conexion {
             try
             {
             CallableStatement cst = conex.prepareCall("CALL GEN_consultaIdEmpresa(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             rh =cst.getResultSet();
             while (rh.next()) {
@@ -50,7 +50,7 @@ public class Consultas_informeMasVendido extends Conexion {
         try
             {
             CallableStatement cst = conex.prepareCall("CALL GEN_consultaLlenarComboSucursal(?)");
-            cst.setInt("id_empresa", Integer.parseInt((empresa.toString())));
+            cst.setInt("id_empresaLog", Integer.parseInt((empresa.toString())));
             cst.execute();
             rh =cst.getResultSet();
             } catch (SQLException ex) 
@@ -67,7 +67,7 @@ public class Consultas_informeMasVendido extends Conexion {
         try
             {
             CallableStatement cst = conex.prepareCall("CALL IVN_consultaProductoVendidoXSucursal(?)");
-            cst.setInt("id_sucursal", ((id_sucursal)));
+            cst.setInt("id_sucursalLog", ((id_sucursal)));
             cst.execute();
             rh =cst.getResultSet();
             } catch (SQLException ex) 
@@ -92,7 +92,7 @@ public class Consultas_informeMasVendido extends Conexion {
 //        return rh;
          try{
             CallableStatement cst = conex.prepareCall("CALL IVN_consultaProductoVendido(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return  cst.getResultSet();
        }
@@ -107,7 +107,7 @@ public class Consultas_informeMasVendido extends Conexion {
         
        try{
             CallableStatement cst = conex.prepareCall("CALL IVN_consultaListaProducto(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return  cst.getResultSet();
        }

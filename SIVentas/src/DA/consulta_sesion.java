@@ -43,7 +43,7 @@ public class consulta_sesion extends DA.Conexion{
     {
        try {
          CallableStatement cst = conex.prepareCall("CALL US_consultaLlenarTablaSesion(?)");
-         cst.setInt("id_empresa", id_empresa);
+         cst.setInt("id_empresaLog", id_empresa);
          cst.execute();
          rh =  cst.getResultSet();
         } catch (SQLException ex) {
@@ -57,7 +57,7 @@ public class consulta_sesion extends DA.Conexion{
     { //..., Usuario, Sucursal, Fecha Inicio, Hora Inicio, Fecha Fin, Hora Fin
        try {
          CallableStatement cst = conex.prepareCall("CALL US_consultaLlenarTablaSesionBuscar(?,?,?)");
-         cst.setInt("id_empresa", id_empresa);
+         cst.setInt("id_empresaLog", id_empresa);
          cst.setString("opcion", opcion);
          cst.setString("nombre", nombre);
          cst.execute();

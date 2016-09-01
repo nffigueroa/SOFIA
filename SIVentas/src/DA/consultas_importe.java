@@ -59,9 +59,9 @@ public class consultas_importe extends Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call CON_consultaCorteCajaImporte(?,?,?)");
-            cst.setInt("id_importe", Integer.parseInt(id_importe.toString()));
-            cst.setInt("id_sucursal", id_sucursal);
-            cst.setInt("id_corte_caja",Integer.parseInt(id_corte_caja.toString()));
+            cst.setInt("id_importeLog", Integer.parseInt(id_importe.toString()));
+            cst.setInt("id_sucursalLog", id_sucursal);
+            cst.setInt("id_corte_cajaLog",Integer.parseInt(id_corte_caja.toString()));
             return cst.execute();
         } catch (Exception e) {
             e.printStackTrace();

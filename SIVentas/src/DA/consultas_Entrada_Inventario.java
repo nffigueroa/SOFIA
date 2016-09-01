@@ -37,7 +37,7 @@ public class consultas_Entrada_Inventario extends Conexion{
         try
         {
         CallableStatement cst = conex.prepareCall("CALL IVN_consultaCantidadYCostoProducto(?)");
-        cst.setInt("id_sucursal", id_sucursal);
+        cst.setInt("id_sucursalLog", id_sucursal);
         cst.execute();
         return cst.getResultSet();
         }
@@ -52,7 +52,7 @@ public class consultas_Entrada_Inventario extends Conexion{
     {
         try
         {
-        CallableStatement cst = conex.prepareCall("CALL IVN_consultaCantidadYCostoProducto(?)");
+        CallableStatement cst = conex.prepareCall("CALL IVN_consultaRegistrarCantidadProductoExistente(?,?)");
         cst.setFloat("cantidad", cantidad);
         cst.setInt("id_producto", id_producto);
         return cst.execute();
@@ -89,7 +89,7 @@ public class consultas_Entrada_Inventario extends Conexion{
        try
         {
             CallableStatement cst = conex.prepareCall("CALL IVN_llenarTabla_inventario(?)");
-            cst.setInt("id_sucursal",id_sucursal);
+            cst.setInt("id_sucursalLog",id_sucursal);
             cst.execute();
             return cst.getResultSet();
         }
@@ -106,7 +106,7 @@ public class consultas_Entrada_Inventario extends Conexion{
         try
         {
             CallableStatement cst = conex.prepareCall("CALL IVN_consultaBuscarProductoInventario(?,?,?)");
-            cst.setInt("id_sucursal",id_sucursal);
+            cst.setInt("id_sucursalLog",id_sucursal);
             cst.setString("nombre",nombre);
             cst.setString("opcionBuscar", opcionBuscar);
             cst.execute();
@@ -125,7 +125,7 @@ public class consultas_Entrada_Inventario extends Conexion{
       
         try {
             CallableStatement cst = conex.prepareCall("CALL GEN_consultaIdEmpresa(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             rh = cst.getResultSet();
             while (rh.next())
@@ -153,7 +153,7 @@ public class consultas_Entrada_Inventario extends Conexion{
     {
          try {
             CallableStatement cst = conex.prepareCall("CALL GEN_consultaLlenarComboSucursal(?)");
-            cst.setInt("id_empresa", Integer.parseInt(empresa.toString()));
+            cst.setInt("id_empresaLog", Integer.parseInt(empresa.toString()));
             cst.execute();
             rh = cst.getResultSet();
         } catch (SQLException ex) {
@@ -176,7 +176,7 @@ public class consultas_Entrada_Inventario extends Conexion{
          cst.setInt("id_producto", Integer.parseInt(id_producto.toString()));
          cst.setObject("cantidad", cantidad);
          cst.setObject("stock", stock);
-         cst.setInt("id_scuursal", Integer.parseInt((id_sucursal.toString())));
+         cst.setInt("id_sucursalLog", Integer.parseInt((id_sucursal.toString())));
          cst.setInt("id_proveedor", Integer.parseInt(id_proveedor.toString()));
          cst.setObject("barras", barras);
          cst.setFloat("precio1", precio1);
@@ -184,7 +184,7 @@ public class consultas_Entrada_Inventario extends Conexion{
          cst.setObject("iva", (iva));
          cst.setObject("expiracion", expiracion);
          cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
-         cst.setFloat("utlidad", utilidad);
+         cst.setFloat("utilidad", utilidad);
          cst.setObject("fecha_creacion", fecha_creacion);
          return cst.execute();
      }
@@ -234,7 +234,7 @@ public class consultas_Entrada_Inventario extends Conexion{
          cst.setObject("iva", (iva));
          cst.setObject("expiracion", expiracion);
          cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
-         cst.setObject("id_producto_inventario", id_producto_inventario);
+         cst.setObject("id_producto_inventarioLog", id_producto_inventario);
          return cst.execute();
      }
      catch(SQLException ex)
@@ -249,7 +249,7 @@ public class consultas_Entrada_Inventario extends Conexion{
         try
         {
             CallableStatement cst = conex.prepareCall("CALL GEN_consultaIdSucursal(?)");
-            cst.setInt("id_sucursal", Integer.parseInt(Sucursal.toString()));
+            cst.setObject("Sucursal", (Sucursal));
             cst.execute();
             rh = cst.getResultSet();
             while(rh.next())

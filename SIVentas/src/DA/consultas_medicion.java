@@ -58,7 +58,7 @@ public class consultas_medicion extends Conexion{
         {
             try {
                 CallableStatement cst = conex.prepareCall("Call GEN_llenarTabla_Medicion(?)");
-                cst.setInt("id_sucursal", id_sucursal);
+                cst.setInt("id_sucursalLog", id_sucursal);
                 cst.execute();
                 return cst.getResultSet();
             } catch (Exception e) {

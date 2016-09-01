@@ -60,7 +60,7 @@ public class consultas_entradaSalidaInventarioInforme extends DA.Conexion {
 
         try {
             CallableStatement cst = conex.prepareCall("Call IVN_consultaProductosEntrada(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return cst.getResultSet();
             
@@ -73,7 +73,7 @@ public class consultas_entradaSalidaInventarioInforme extends DA.Conexion {
     public ResultSet consultaProductosSalida(int id_empresa) {
          try {
             CallableStatement cst = conex.prepareCall("Call IVN_consultaProductosSalida(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -86,8 +86,8 @@ public class consultas_entradaSalidaInventarioInforme extends DA.Conexion {
 
        try {
             CallableStatement cst = conex.prepareCall("Call IVN_consultaProductosSalida(?,?)");
-            cst.setInt("id_empresa", id_empresa);
-            cst.setObject("texto", texto);
+            cst.setInt("idEmpresa", id_empresa);
+            cst.setObject("textoLog", texto);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {

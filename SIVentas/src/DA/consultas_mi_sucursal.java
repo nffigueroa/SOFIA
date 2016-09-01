@@ -59,7 +59,7 @@ public class consultas_mi_sucursal extends DA.Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call GEN_consultaSucursales(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {

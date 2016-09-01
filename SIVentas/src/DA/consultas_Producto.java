@@ -88,7 +88,7 @@ public class consultas_Producto extends Conexion{
     public ResultSet consultaLLenarComboCategoria()
     {
         try{
-           CallableStatement cst = conex.prepareCall("Call IVN_eliminar_Producto()");
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaLLenarComboCategoria()");
            cst.execute();
            return cst.getResultSet();
        }
@@ -220,7 +220,7 @@ public class consultas_Producto extends Conexion{
             cst.setInt("marca", Integer.parseInt(marca.toString()));
             cst.setInt("medicion", Integer.parseInt(medicion.toString()));
             cst.setInt("presentacion", Integer.parseInt(presentacion.toString()));
-            cst.setInt("id_sucursal", Integer.parseInt(id_sucursal.toString()));
+            cst.setInt("id_sucursalLog", Integer.parseInt(id_sucursal.toString()));
             return cst.execute();
         }
         catch(SQLException e)
@@ -235,7 +235,7 @@ public class consultas_Producto extends Conexion{
         
         try{
             CallableStatement cst = conex.prepareCall("Call IVN_consultaActualizarProducto(?,?,?,?,?,?)");
-            cst.setInt("id_producto", Integer.parseInt(id_producto.toString()));
+            cst.setInt("id_productoLog", Integer.parseInt(id_producto.toString()));
             cst.setString("nombre", nombre);
             cst.setInt("categoria", Integer.parseInt(categoria.toString()));
             cst.setInt("marca", Integer.parseInt(marca.toString()));

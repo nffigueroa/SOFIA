@@ -78,7 +78,7 @@ public class consultas_proveedores extends Conexion{
     public Boolean consultaEliminarCategoria(Object id_usuario) {
         try {
             CallableStatement cst = conex.prepareCall("Call GEN_consultaEliminarCategoria(?)");
-            cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
+            cst.setInt("id_usuarioLog", Integer.parseInt(id_usuario.toString()));
             return cst.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class consultas_proveedores extends Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call GEN_consultaCategoriasProveedor(?) ");
-            cst.setInt("id_proveedor", Integer.parseInt(id_proveedor.toString()));
+            cst.setInt("id_proveedorLog", Integer.parseInt(id_proveedor.toString()));
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class consultas_proveedores extends Conexion{
         
        try {
             CallableStatement cst = conex.prepareCall("Call GEN_llenarTabla_Proveedor(?) ");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {

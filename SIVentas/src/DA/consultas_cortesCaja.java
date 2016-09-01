@@ -123,7 +123,7 @@ public class consultas_cortesCaja extends Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call CON_consultaFacturacionSinCorte(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -136,7 +136,7 @@ public class consultas_cortesCaja extends Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call CON_consultaImportes(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class consultas_cortesCaja extends Conexion{
     {
          try {
             CallableStatement cst = conex.prepareCall("Call CON_consultaTotalFacturacion(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -161,7 +161,7 @@ public class consultas_cortesCaja extends Conexion{
     {
          try {
             CallableStatement cst = conex.prepareCall("Call CON_consultaTotalImporte(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {

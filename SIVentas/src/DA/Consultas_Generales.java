@@ -39,7 +39,7 @@ public class Consultas_Generales extends Conexion {
 //                + " WHERE SUC.id_sucursal=FACT.id_sucursal AND SUC.id_empresa=" + id_empresa + "");
 //        rh = consultaResusltados(sql);
         try {
-            CallableStatement cst = conex.prepareCall("CALL consultaPrimerFechaXEmpresa(?)");
+            CallableStatement cst = conex.prepareCall("CALL GEN_consultaPrimerFechaXEmpresa(?)");
             cst.setInt("empresa", id_empresa);
             cst.execute();
             rh =  cst.getResultSet();
@@ -57,7 +57,7 @@ public class Consultas_Generales extends Conexion {
         
         try {
             
-           CallableStatement cst = conex.prepareCall("CALL consultaUtilidadPorProducto(?)");
+           CallableStatement cst = conex.prepareCall("CALL GEN_consultaUtilidadPorProducto(?)");
             cst.setInt("id_producto_inven", id_producto_inven);
             cst.execute();
             rh =  cst.getResultSet();
@@ -75,7 +75,7 @@ public class Consultas_Generales extends Conexion {
         float valor_unidad = 0, cantidad_unidad = 0, total = 0;
         try {
         CallableStatement cst = conex.prepareCall("CALL IVN_consultaCuantoDineroinventario()");
-        cst.setInt("id_sucursal", id_sucursal);
+        cst.setInt("id_sucursalLog", id_sucursal);
         cst.execute();
         rh =  cst.getResultSet();
             while (rh.next()) {
@@ -94,7 +94,7 @@ public class Consultas_Generales extends Conexion {
         float valor_unidad = 0, cantidad_unidad = 0, total = 0;
          try {
             CallableStatement cst = conex.prepareCall("CALL CON_consultaCuantoDineroPorBusqueda(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("id_sucursalLog", id_sucursal);
             cst.execute();
             rh =  cst.getResultSet();
             while (rh.next()) {
@@ -128,7 +128,7 @@ public class Consultas_Generales extends Conexion {
         int id_inventario = 0;
         try {
          CallableStatement cst = conex.prepareCall("CALL GEN_consultaUltimoIdInventario(?)");
-         cst.setInt("id_sucursal", id_sucursal);
+         cst.setInt("id_sucursalLog", id_sucursal);
          cst.execute();
          rh = cst.getResultSet();
             while (rh.next()) {
@@ -166,7 +166,7 @@ public class Consultas_Generales extends Conexion {
         int id_sesion = 0;
         try {
             CallableStatement cst =  conex.prepareCall("CALL US_consultaIdSesion(?)");
-            cst.setInt("id_usuario", id_usuario);
+            cst.setInt("id_usuarioLog", id_usuario);
             cst.execute();
             rh = cst.getResultSet();
         } catch (Exception e) {

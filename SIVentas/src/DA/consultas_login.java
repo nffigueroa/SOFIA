@@ -63,7 +63,7 @@ public class consultas_login  extends Conexion{
          Object psw = null;
        try{
            CallableStatement cst = conex.prepareCall("Call US_consultasPassword(?)");
-           cst.setObject("usuario", usuario);
+           cst.setObject("usuarioLog", usuario);
            cst.execute();
            rh = cst.getResultSet();
             while(rh.next())
@@ -96,7 +96,7 @@ public class consultas_login  extends Conexion{
     {
         try {
             CallableStatement cst = conex.prepareCall("Call US_consultasDatosLogeoUsuario(?)");
-            cst.setObject("usuario", usuario);
+            cst.setObject("usuarioLog", usuario);
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {

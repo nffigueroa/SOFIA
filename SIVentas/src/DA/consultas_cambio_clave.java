@@ -60,7 +60,7 @@ public class consultas_cambio_clave extends DA.Conexion{
         try
         {
             CallableStatement cst = conex.prepareCall("Call US_consultaRegistrarCambioClave(?,?)");
-            cst.setInt("id_usuario", id_usuario);
+            cst.setInt("id_usuarioLog", id_usuario);
             cst.setObject("nuevaPassword", nuevaPassword);
             return cst.execute();
         }

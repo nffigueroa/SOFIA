@@ -60,7 +60,7 @@ public class consultas_Cliente extends Conexion{
         try {
             
            CallableStatement cst = conex.prepareCall("CALL CLI_llenarTabla_Cliente(?)");
-            cst.setInt("id_Sucursal", id_sucursal);
+            cst.setInt("id_SucursalLog", id_sucursal);
             cst.execute();
             rh =  cst.getResultSet();
             
@@ -168,7 +168,7 @@ public class consultas_Cliente extends Conexion{
        try
        {
            CallableStatement cst = conex.prepareCall("CALL CLI_consultaBuscarCliente(?,?,?)");
-           cst.setInt("id_sucursal", id_sucursal);
+           cst.setInt("id_sucursalLog", id_sucursal);
            cst.setString("nombre", nombre);
            cst.setString("opcionBuscar", opcionBuscar);
            cst.execute();

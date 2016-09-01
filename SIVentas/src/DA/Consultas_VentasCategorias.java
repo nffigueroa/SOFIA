@@ -33,7 +33,7 @@ public class Consultas_VentasCategorias extends Conexion{
     {
        try{
             CallableStatement cst = conex.prepareCall("CALL IVN_consultaProductoVendido(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return  cst.getResultSet();
        }
