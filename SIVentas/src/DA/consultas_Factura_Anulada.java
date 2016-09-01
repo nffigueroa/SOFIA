@@ -35,7 +35,7 @@ public class consultas_Factura_Anulada extends Conexion{
     {
         try{
             CallableStatement cst = conex.prepareCall("Call CON_consultaLlenarFacturaAnuladas(?)");
-            cst.setInt("id_sucursal", id_sucursal);
+            cst.setInt("idSucursal", id_sucursal);
             cst.execute();
             return cst.getResultSet();
         }

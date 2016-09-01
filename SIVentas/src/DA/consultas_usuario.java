@@ -28,6 +28,7 @@ public class consultas_usuario extends Conexion {
     public consultas_usuario()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -94,7 +95,7 @@ public class consultas_usuario extends Conexion {
     public ResultSet consultaPermisoUsuario(Object id_usuario) {
         try {
             CallableStatement cst= conex.prepareCall("Call US_consultaPermisoUsuario(?)");
-            cst.setInt("id_usuario", Integer.parseInt(id_usuario.toString()));
+            cst.setInt("id_usuarioLog", Integer.parseInt(id_usuario.toString()));
             cst.execute();
             return cst.getResultSet();
         } catch (Exception e) {
@@ -126,11 +127,11 @@ public class consultas_usuario extends Conexion {
 
         try {
             CallableStatement cst = conex.prepareCall("Call US_consultaLlenarTabla_Usuario(?)");
-            cst.setInt("id_empresa", id_empresa);
+            cst.setInt("id_empresaLog", id_empresa);
             cst.execute();
             return cst.getResultSet();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
             return null;
         }
 

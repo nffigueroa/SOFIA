@@ -144,7 +144,7 @@ public class consultas_Producto extends Conexion{
         Object id_categoria = null;
         try {
         CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboCategoria(?)");
-        cst.setObject("categoria", categoria);
+        cst.setObject("categoriaLog", categoria);
         cst.execute();
         rh = cst.getResultSet();
             while(rh.next())
@@ -161,7 +161,7 @@ public class consultas_Producto extends Conexion{
         Object id_presentacion = null;
         try {
         CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboPresentacion(?)");
-        cst.setObject("presentacion", presentacion);
+        cst.setObject("presentacionLog", presentacion);
         cst.execute();
         rh = cst.getResultSet();
             while(rh.next())
@@ -178,7 +178,7 @@ public class consultas_Producto extends Conexion{
         Object id_medicion = null;
        try {
         CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboMedicion(?)");
-        cst.setObject("medicion", medicion);
+        cst.setObject("medicionLog", medicion);
         cst.execute();
         rh = cst.getResultSet();
             while(rh.next())
@@ -195,7 +195,7 @@ public class consultas_Producto extends Conexion{
         Object id_marca = null;
         try {
         CallableStatement cst = conex.prepareCall("Call GEN_consultaIDComboMarca(?)");
-        cst.setObject("marca", marca);
+        cst.setObject("marcaLog", marca);
         cst.execute();
         rh = cst.getResultSet();
             while(rh.next())

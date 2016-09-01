@@ -5,12 +5,14 @@
  */
 package DA;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -31,6 +33,7 @@ public class consultas_factura extends Conexion{
     public consultas_factura()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {
@@ -62,9 +65,16 @@ public class consultas_factura extends Conexion{
     {
         
         for (int i = 0; i < fechas_pagos. length; i++) {
-             sql=("INSERT INTO historial_credito (id_credito,numero_cuota,recibe,cambio,fecha_pagar,fecha,hora,id_usuario) VALUES "
-                + "("+id_credito+","+(i+1)+",0,0,'"+fechas_pagos[i]+"',null,null,0)"); 
-             insertarResultados(sql);
+             try {
+                 CallableStatement cst = conex.prepareCall("Call CON_consultaGenerarHistorialCredito(?,?,?)");
+                 cst.setInt("id_creditoLog", id_credito);
+                 cst.setInt("i", +1);
+                 cst.setObject("fechaPagos", fechas_pagos[i]);
+                 cst.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
        return true;
     }
@@ -72,17 +82,26 @@ public class consultas_factura extends Conexion{
     public boolean consultaDescontarCantidadProducto(Object id_producto_inventario,float cantidad)
     {
         
-        sql =("UPDATE producto_inventario SET cantidad_producto_inventario="+cantidad+" WHERE id_producto_inventario="+id_producto_inventario+"");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaDescontarCantidadProducto(?,?)");
+            cst.setFloat("cantidad", cantidad);
+            cst.setInt("id_producto_inventarioLog",Integer.parseInt( id_producto_inventario.toString()) );
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     
     public float consultaExistencia(Object id_producto_inventario)
     {
         float cantidad =0;
-        sql=("SELECT cantidad_producto_inventario,id_producto_inventario FROM producto_inventario WHERE id_producto_inventario ="+id_producto_inventario+" ");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call IVN_consultaExistencia(?)");
+            cst.setInt("idProductoinventario", Integer.parseInt(id_producto_inventario.toString()));
+            cst. execute();
+            rh = cst.getResultSet();
             while(rh.next())
             cantidad = rh.getFloat("cantidad_producto_inventario");
         } catch (SQLException ex) {
@@ -93,9 +112,11 @@ public class consultas_factura extends Conexion{
     public float consultaStock(Object id_producto_inventario)
     {
         float stock =0;
-        sql = ("SELECT stock_producto_inventario FROM producto_inventario WHERE id_producto_inventario ="+id_producto_inventario+" ");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call IVN_consultaStock(?)");
+            cst.setInt("id_producto_inventarioLog", Integer.parseInt(id_producto_inventario.toString()));
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             stock = rh.getFloat("stock_producto_inventario");
         } catch (SQLException ex) {
@@ -107,16 +128,25 @@ public class consultas_factura extends Conexion{
     public ResultSet consultaDatosEmpresaParaFactura(int id_sucursal)
     {
        
-        sql =("SELECT id.sucursal,id_empresa, from mi_empresa WHERE id_sucursal="+id_sucursal+"");
-        return consultaResusltados(sql);
+       try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaDatosEmpresaParaFactura(?)");
+            cst.setInt("idSucursal", id_sucursal);
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
      public int cosultaIdCotizacionUltima(int id_sucursal)
     {
         int id_cotizacion=0;
-        sql=("SELECT id_cotizaciones FROM cotizaciones WHERE id_sucursal="+id_sucursal+"");
-        rh = consultaResusltados(sql);
-        try {
+         try{
+            CallableStatement cst = conex.prepareCall("Call CON_cosultaIdCotizacionUltima(?)");
+            cst.setInt("id_producto_inventarioLog", id_sucursal);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -132,9 +162,11 @@ public class consultas_factura extends Conexion{
      public int cosultaIdCreditoUltima(int id_sucursal)
     {
         int id_cotizacion=0;
-        sql=("SELECT id_credito FROM credito WHERE id_sucursal="+id_sucursal+"");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+            CallableStatement cst = conex.prepareCall("Call CON_cosultaIdCreditoUltima(?)");
+            cst.setInt("idSucursal", id_sucursal);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -151,9 +183,11 @@ public class consultas_factura extends Conexion{
     public int cosultaIdFacturaUltima(int id_sucursal)
     {
         int id_factura=0;
-        sql=("SELECT id_factura,numero_factura FROM factura WHERE id_sucursal="+id_sucursal+"");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call CON_cosultaIdFacturaUltima(?)");
+            cst.setInt("idSucursal", id_sucursal);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -169,9 +203,11 @@ public class consultas_factura extends Conexion{
     public int cosultaNumeroFactura(int id_sucursal)
     {
         int id_factura=0;
-        sql=("SELECT id_factura,numero_factura FROM factura WHERE id_sucursal="+id_sucursal+"");
-        rh = consultaResusltados(sql);
-        try {
+         try{
+            CallableStatement cst = conex.prepareCall("Call CON_cosultaNumeroFactura(?)");
+            cst.setInt("idSucursal", id_sucursal);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -186,20 +222,42 @@ public class consultas_factura extends Conexion{
     public boolean consultaRegistrarCorteCajaFactura(Object id_corte_caja,Object id_factura, int id_sucursal)
     {
         
-        sql=("UPDATE factura SET id_corte_caja="+id_corte_caja+" WHERE id_factura="+id_factura+" AND id_sucursal="+id_sucursal+"");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaRegistrarCorteCajaFactura(?,?,?) ");
+            cst.setInt("idCorteCaja", Integer.parseInt(id_corte_caja.toString()));
+            cst.setInt("idFactura", Integer.parseInt(id_factura.toString()));
+            cst.setInt("idSucursal", id_sucursal);
+            return cst.execute();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public ResultSet consultallenarComboPagarCon()
     {
-        sql=("SELECT forma_pago FROM forma_pago");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultallenarComboPagarCon()");
+            cst.execute();
+            return cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public boolean consultaRegistrarUtilidad(int id_factura,float utilidad)
     {
-        sql=("UPDATE factura SET ganancia_factura="+utilidad+" WHERE id_factura ="+id_factura+"");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaRegistrarUtilidad(?,?)");
+            cst.setInt("idFactura", id_factura);
+            cst.setFloat("utilidadLog", utilidad);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public boolean registrarFacturaDetalle(Object id_producto_inventario,Object item, Object cantidad_factura_detallado,

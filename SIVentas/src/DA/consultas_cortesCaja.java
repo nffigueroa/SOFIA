@@ -29,6 +29,7 @@ public class consultas_cortesCaja extends Conexion{
     public consultas_cortesCaja()
     {
         con = new Conexion();
+        conex = con.crearConexionNueva();
     }
     
     private ResultSet consultaResusltados(String sql) {

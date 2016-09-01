@@ -27,7 +27,7 @@ public class Consultas_VentasCategorias extends Conexion{
     public Consultas_VentasCategorias()
     {
         con = new Conexion();
-        con.crearConexionNueva();
+        conex = con.crearConexionNueva();
     }
     public ResultSet consultaProductoVendido(int id_empresa)
     {
