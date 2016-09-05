@@ -263,42 +263,63 @@ public class consultas_factura extends Conexion{
     public boolean registrarFacturaDetalle(Object id_producto_inventario,Object item, Object cantidad_factura_detallado,
             Object descuento_factura_detalle, Object valor_unidad_producto, Object subtotal_factura_detalle, Object id_factura,boolean ban)
     {
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_registrarFacturaDetalle(?,?,?,?,?,?)");       
+            if(ban==false)
+            {
+                cst.setInt("idPrInventario", Integer.parseInt("id_producto_inventario"));
+                cst.setInt("itemLog", Integer.parseInt(item.toString()));
+                cst.setFloat("cantidad", Float.parseFloat(cantidad_factura_detallado.toString()));
+                cst.setFloat("valorUnidad", Float.parseFloat(valor_unidad_producto.toString()));
+                cst.setFloat("subtotal", Float.parseFloat(subtotal_factura_detalle.toString()));
+                cst.setFloat("factDet", Float.parseFloat(descuento_factura_detalle.toString()));
+                cst.setInt("idFactura", Integer.parseInt(id_factura.toString()));
+                cst.setBoolean("opcion", ban);
+                return cst.execute();
+            }
+            else
+            {
+                cst.setInt("idPrInventario", Integer.parseInt("id_producto_inventario"));
+                cst.setInt("itemLog", Integer.parseInt(item.toString()));
+                cst.setFloat("cantidad", Float.parseFloat(cantidad_factura_detallado.toString()));
+                cst.setFloat("valorUnidad", Float.parseFloat(valor_unidad_producto.toString()));
+                cst.setFloat("subtotal", Float.parseFloat(subtotal_factura_detalle.toString()));
+                cst.setFloat("factDet", Float.parseFloat(descuento_factura_detalle.toString()));
+                cst.setInt("idFactura", Integer.parseInt(id_factura.toString()));
+                cst.setBoolean("opcion", ban);
+                return cst.execute();
+            }
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
         
-        if(ban==false)
-        {
-            sql=("INSERT INTO factura_detalle (id_producto_inventario,item,cantidad_factura_detallado,descuento_factura_detalle,"
-                + "valor_unidad_producto,subtotal_factura_detalle,id_factura,id_credito) VALUES ("+id_producto_inventario+","+item+","
-                + ""+cantidad_factura_detallado+","+descuento_factura_detalle+","+valor_unidad_producto+","
-        + ""+subtotal_factura_detalle+","+id_factura+",0)");
-            return insertarResultados(sql);
         }
-        else
-        {
-            sql=("INSERT INTO factura_detalle (id_producto_inventario,item,cantidad_factura_detallado,descuento_factura_detalle,"
-                + "valor_unidad_producto,subtotal_factura_detalle,id_factura,id_credito) VALUES ("+id_producto_inventario+","+item+","
-                + ""+cantidad_factura_detallado+","+descuento_factura_detalle+","+valor_unidad_producto+","
-        + ""+subtotal_factura_detalle+",0,"+id_factura+")");
-            return insertarResultados(sql);
-        }
-        
     }
     
      public boolean registrarCotizacionDetalle(Object id_producto_inventario,Object item, Object cantidad_factura_detallado,
             Object descuento_factura_detalle, Object valor_unidad_producto, Object subtotal_factura_detalle, Object id_cotizacion)
     {
         
-        
-        
-        sql=("INSERT INTO cotizaciones_detalle (id_producto_inventario,item,cantidad_factura_detallado,descuento_factura_detalle,"
-                + "valor_unidad_producto,subtotal_factura_detalle,id_cotizaciones) VALUES ("+id_producto_inventario+","+item+","
-                + ""+cantidad_factura_detallado+","+descuento_factura_detalle+","+valor_unidad_producto+","
-        + ""+subtotal_factura_detalle+","+id_cotizacion+")");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_registrarCotizacionDetalle(?,?,?,?,?,?,?)");
+            cst.setInt("idPrInventario", Integer.parseInt(id_producto_inventario.toString()));
+            cst.setInt("itemLog", Integer.parseInt(item.toString()));
+            cst.setFloat("cantidadFacDet", Float.parseFloat(cantidad_factura_detallado.toString()));
+            cst.setFloat("descFactDet", Float.parseFloat(descuento_factura_detalle.toString()));
+            cst.setFloat("valorUnidad", Float.parseFloat(valor_unidad_producto.toString()));
+            cst.setFloat("subTotal", Float.parseFloat(subtotal_factura_detalle.toString()));
+            cst.setInt("idCotizacion", Integer.parseInt(id_cotizacion.toString()));
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     
-    public boolean registrarFactura(Object hora,int id_sucursal,Object folio,Object subtotal, Object descuento, Object iva, Object total, Object id_cliente, Object id_forma_pago
-    ,Object recibe,Object cambio, Object usuario, Object fecha,Object numero_fact,Object tarjeta)
+    public boolean registrarFactura(Object hora,int id_sucursal,Object folio,Object subtotal, Object descuento, Object iva, Object total, 
+     Object id_cliente, Object id_forma_pago ,Object recibe,Object cambio, Object usuario, Object fecha,Object numero_fact,Object tarjeta)
     {
         if(folio =="")
         {
@@ -310,47 +331,98 @@ public class consultas_factura extends Conexion{
             tarjeta=0;
         }
           
-        sql=("INSERT INTO factura (folio,numero_factura,subtotal,descuento,iva,total,id_cliente,id_sucursal,id_forma_pago,digitos_tarjeta,recibe,cambio,descripcion,id_usuario_creacion"
-                + ",fecha_creacion,hora_creacion) VALUES ('"+folio+"',"+numero_fact+",'"+subtotal+"','"+descuento+"','"+iva+"','"+total+"',"
-        + ""+id_cliente+","+id_sucursal+","+id_forma_pago+",'"+tarjeta+"','"+recibe+"','"+cambio+"','',"+usuario+",'"+fecha+"','"+hora+"')");
-        insertarResultados(sql);
-        return true;
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_registrarFactura(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            cst.setInt("idCliente", Integer.parseInt(id_cliente.toString()));
+            cst.setObject("horaLog", hora);
+            cst. setInt("idSucursal", id_sucursal);
+            cst.setInt("folioLog",Integer.parseInt(folio.toString()));
+            cst.setFloat("subtotalLog", Float.parseFloat(subtotal.toString()));
+            cst.setFloat("descuentoLog", Float.parseFloat(descuento.toString()));
+            cst.setFloat("ivaLog", Float.parseFloat(iva.toString()));
+            cst.setFloat("totalLog", Float.parseFloat(total.toString()));
+            cst.setInt(("idFormaPago"), Integer.parseInt(id_forma_pago.toString()));
+            cst.setFloat("recibeLog", Float.parseFloat(recibe.toString()));
+            cst.setFloat("cambioLog", Float.parseFloat(cambio.toString()));
+            cst.setInt("usuarioLog",Integer.parseInt(usuario.toString()));
+            cst.setObject("fechaLog", fecha);
+            cst.setInt("numFact",Integer.parseInt(numero_fact.toString()));
+            cst.setObject("tarjetaLog", tarjeta);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
-     public boolean registrarCredito(Object hora,int id_sucursal,Object valor_pagar,Object subtotal, Object descuento, Object iva, Object total, Object id_cliente
+     public boolean registrarCredito(Object hora,int id_sucursal,Object valor_pagar,Object subtotal, Object descuento, Object iva, Object total, 
+             Object id_cliente
     ,Object cuotas, Object id_usuario, Object fecha,Object porcentaje_interes,Object id_estado,Object cliente)
     {
        
-                
-        sql=("INSERT INTO credito (valor_pagar_mensual,cantidad_credito,subtotal,iva,descuento,"
-                + "porcentaje_interes,cuotas,cuotas_pagas,cuotas_pendientes,id_estado,id_usuario,id_sucursal,fecha,hora,id_cliente)"
-                + " VALUES ('"+valor_pagar+"',"+total+",'"+subtotal+"','"+iva+"','"+descuento+"','"+porcentaje_interes+"',"
-        + ""+cuotas+",0,"+cuotas+",'"+id_estado+"',"+id_usuario+","+id_sucursal+",'"+fecha+"','"+hora+"',"+cliente+")");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call registrarCredito(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            cst.setObject("horaLog", hora);
+            cst.setInt("idSucursal", id_sucursal);
+            cst.setFloat("valorPagar",Float.parseFloat(valor_pagar.toString()));
+            cst.setFloat("subTotalLog", Float.parseFloat(subtotal.toString()));
+            cst.setFloat("descuentoLog", Float.parseFloat(descuento.toString())); 
+            cst.setFloat("ivaLog", Float.parseFloat(iva.toString()));
+            cst.setFloat("totalLog", Float.parseFloat(total.toString()));
+            cst.setInt("idCliente", Integer.parseInt(id_cliente.toString()));
+            cst.setInt("cuotasLog", Integer.parseInt(cuotas.toString()));
+            cst.setInt("idUsuario", Integer.parseInt(id_usuario.toString()));
+            cst.setObject("fechaLog", fecha);
+            cst.setInt("porcentajeInteres", Integer.parseInt(porcentaje_interes.toString()));
+            cst.setInt("idEstado", Integer.parseInt(id_estado.toString()));
+            return cst.execute();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        
     }
     
     public boolean registrarCotizacion(Object hora,int id_sucursal,Object subtotal, Object descuento, Object iva, Object total, Object id_cliente
     , Object descripcion, Object usuario, Object fecha,Object fec_validez)
     {
            
-        sql=("INSERT INTO cotizaciones (cot_subtotal,cot_descuento,cot_iva,cot_total,id_cliente,id_sucursal,"
-                + "cot_descripcion,id_usuario"
-                + ",fecha_creacion,hora_creacion,fecha_validez) VALUES ('"+subtotal+"','"+descuento+"','"+iva+"','"+total+"',"
-        + ""+id_cliente+","+id_sucursal+",'"+descripcion+"',"+usuario+",'"+fecha+"','"+hora+"','"+fec_validez+"')");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_registrarCotizacion(?,?,?,?,?,?,?,?,?,?,?)");
+            cst.setObject("horaLog", hora);
+            cst.setInt("idSucursal", id_sucursal);
+            cst.setFloat("subTotalLog", Integer.parseInt(subtotal.toString()));
+            cst.setFloat("descuentoLog", Float.parseFloat(descuento.toString())); 
+            cst.setFloat("ivaLog", Float.parseFloat(iva.toString()));
+            cst.setFloat("totalLog", Float.parseFloat(total.toString()));
+            cst.setInt("idCliente", Integer.parseInt(id_cliente.toString()));
+            cst.setObject("descripcionLog", descripcion);
+            cst.setInt("usuarioLog", Integer.parseInt(usuario.toString()));
+            cst.setObject("fechaLog", fecha);
+            cst.setObject("fechaValidez", fec_validez);
+            return cst.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public int cosultaIdCliente(Object cliente)
     {
         int id_cliente=0;
-        sql=("SELECT id_cliente FROM cliente WHERE cedula_cliente='"+cliente+"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst= conex.prepareCall("Call GEN_cosultaIdCliente(?)");
+           cst.setObject("cliente", cliente);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_cliente = rh.getInt("id_cliente");
             
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return 0;
         }
         return id_cliente;
     }
@@ -358,9 +430,11 @@ public class consultas_factura extends Conexion{
      public int cosultaIdEstadoCredito(Object estado)
     {
         int id_estado=0;
-        sql=("SELECT id_estado FROM estado_Credito WHERE estado='"+estado+"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst= conex.prepareCall("Call CRE_cosultaIdEstadoCredito(?)");
+           cst.setObject("estadoLog", estado);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_estado = rh.getInt("id_estado");
             
@@ -373,9 +447,11 @@ public class consultas_factura extends Conexion{
     public int cosultaIdFormaPago(Object formaPago)
     {
         int id_forma_pago=0;
-        sql=("SELECT id_forma_pago FROM forma_pago WHERE forma_pago='"+formaPago+"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call GEN_cosultaIdFormaPago(?)");
+           cst.setObject("formaPago", formaPago);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_forma_pago = rh.getInt("id_forma_pago");
             
@@ -388,9 +464,10 @@ public class consultas_factura extends Conexion{
      public int cosultaIdFactura()
     {
         int id_factura=0;
-        sql=("SELECT id_factura FROM factura");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call CON_cosultaIdFactura()");
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -406,9 +483,10 @@ public class consultas_factura extends Conexion{
      public int cosultaIdFacturaAnulada()
     {
         int id_factura=0;
-        sql=("SELECT id_factura_anulada FROM factura_anulada");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call CON_cosultaIdFacturaAnulada()");
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 if(rh.last())
@@ -424,101 +502,101 @@ public class consultas_factura extends Conexion{
      
      public Boolean consultaLlenaarIdAnulacionFactura(Object id_factura_anulada, Object id_factura)
      {
-         sql=("UPDATE factura SET id_factura_anulada="+id_factura_anulada+" WHERE id_factura="+id_factura+"");
-         return insertarResultados(sql);
+         try {
+             CallableStatement cst = conex.prepareCall("Call CON_consultaLlenaarIdAnulacionFactura(?,?)");
+             cst.setInt("idFactura", Integer.parseInt(id_factura.toString()));
+             cst.setInt("id_factura_anuladaLog",Integer.parseInt(id_factura_anulada.toString()));
+             return cst.execute();
+         } catch (Exception e) {
+             e.printStackTrace();
+             return false;
+         }
      }
      
      public ResultSet consultaLlenarTablaFactura(int id_sucursal, Object fecha,Object fecha_Hasta,boolean ban)
      {
-         
+         try{
+             CallableStatement cst = conex.prepareCall("Call CON_consultaLlenarTablaFactura(?,?,?)");
+             
          if(ban)
          {
-        sql=("SELECT DISTINCT FACT.id_factura,FACT.folio,FACT.total,FACT.subtotal,FACT.descuento,"
-                 + "FACT.iva,"
-                 + "FORMAT(FACT.recibe,2),FORMAT(FACT.cambio,2),FORMA.forma_pago,FACT.digitos_tarjeta,FACT.descripcion,CLI.nombre_cliente,"
-                 + "CLI.apellido_cliente,CLI.cedula_cliente,CLI.direccion_cliente,FACT.fecha_creacion,FORMA.id_forma_pago,"
-                 + "FACT.id_cliente,FACT.id_forma_pago,CLI.id_cliente FROM "
-                 + "factura AS FACT,forma_pago AS FORMA,cliente AS CLI "
-                 + "where FACT.id_factura_anulada=0 AND FACT.id_sucursal="+id_sucursal+" AND "
-                 + "FACT.id_forma_pago=FORMA.id_forma_pago AND FACT.id_cliente = CLI.id_cliente"
-                 + " AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta+"' ORDER BY FACT.fecha_creacion DESC");
-         return consultaResusltados(sql);
+            cst.setInt("idSucursal", id_sucursal);
+            cst.setObject("fechaLog", fecha);
+            cst.setObject("fechaHasta", fecha_Hasta);
+            cst.setBoolean("ban", ban);
+            cst.execute();
+            return cst. getResultSet();
          }
-         else
+            else
+            {
+                cst.setInt("idSucursal", id_sucursal);
+               cst.setObject("fechaLog", fecha);
+               cst.setObject("fechaHasta", fecha_Hasta);
+               cst.setBoolean("ban", ban);
+               cst.execute();
+               return cst. getResultSet();
+            }
+         }
+         catch(SQLException e)
          {
-             sql=("SELECT DISTINCT FACT.id_factura,FACT.folio,FACT.total,FACT.subtotal,FACT.descuento,"
-                 + "FACT.iva,"
-                 + "FORMAT(FACT.recibe,2),FORMAT(FACT.cambio,2),FORMA.forma_pago,FACT.digitos_tarjeta,FACT.descripcion,CLI.nombre_cliente,"
-                 + "CLI.apellido_cliente,CLI.cedula_cliente,CLI.direccion_cliente,FACT.fecha_creacion,FACT.hora_creacion,FACT.ganancia_factura,"
-                     + "SUC.nombre_sucursal,FORMA.id_forma_pago,"
-                 + "FACT.id_cliente,FACT.id_forma_pago,CLI.id_cliente FROM "
-                 + "factura AS FACT,forma_pago AS FORMA,cliente AS CLI,sucursal AS SUC "
-                 + "where FACT.id_factura_anulada=0 AND FACT.id_sucursal=SUC.id_sucursal AND SUC.id_empresa="+id_sucursal+"  AND "
-                 + "FACT.id_forma_pago=FORMA.id_forma_pago AND FACT.id_cliente = CLI.id_cliente"
-                 + " AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta+"' ORDER BY FACT.fecha_creacion DESC");
-         return consultaResusltados(sql); 
+             e.printStackTrace();
+             return null;
          }
      }
      public ResultSet consultaLlenarTablaFacturaXEmpresa(int id_empresa, Object fecha,Object fecha_Hasta)
      {
          //ESTA FUNCION LLENA LA TABLA DE VENTAS DIARIAS
-         sql=("SELECT DISTINCT SUC.id_sucursal,FACT.id_sucursal,FACT.fecha_creacion,"
-                 + "FACT.total,FACT.iva,FACT.descuento FROM factura AS FACT,sucursal AS SUC\n" +
-"WHERE SUC.id_empresa= "+id_empresa+" AND FACT.id_factura_anulada=0 AND SUC.id_sucursal = FACT.id_sucursal AND Date(FACT.fecha_creacion)\n" +
-"BETWEEN '"+fecha+"' AND '"+fecha_Hasta+"'");
-         return consultaResusltados(sql);
+         try {
+             CallableStatement cst= conex.prepareCall("Call CON_consultaLlenarTablaFacturaXEmpresa(?,?,?)");
+             cst.setInt("idEmpresa", id_empresa);
+             cst.setObject("fechaLog", fecha);
+             cst.setObject("fechaHastaLog", fecha_Hasta);
+             cst.execute();
+             return cst.getResultSet();
+         } catch (Exception e) {
+             e.printStackTrace();
+             return null;
+         }
      }
      public ResultSet consultaLlenarVentaXMesXEmpresa(int id_empresa, Object fecha,Object fecha_Hasta)
      {
          //ESTA FUNCION LLENA LA TABLA DE VENTAS DIARIAS POR EMPRESA
-         sql=("SELECT DISTINCT SUC.id_sucursal,FACT.id_sucursal,FACT.id_factura,FACT.fecha_creacion,"
-                 + "CASE WHEN MONTH(FACT.fecha_creacion)=1 THEN 'ENERO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=2 THEN 'FEBRERO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=3 THEN 'MARZO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=4 THEN 'ABRIL' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=5 THEN 'MAYO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=6 THEN 'JUNIO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=7 THEN 'JULIO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=8 THEN 'AGOSTO' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=9 THEN 'SEPTIEMBRE' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=10 THEN 'OCTUBRE'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=11 THEN 'NOVIEMBRE' "
-                 + "WHEN MONTH(FACT.fecha_creacion)=12 THEN 'DICIEMBRE' ELSE 'ESTO NO ES UN MES' END AS MESespañol,"
-                 + "FACT.total,FACT.iva,FACT.descuento FROM factura AS FACT,sucursal AS SUC \n" +
-"WHERE SUC.id_empresa= "+id_empresa+" AND FACT.id_factura_anulada=0 AND SUC.id_sucursal = FACT.id_sucursal AND Date(FACT.fecha_creacion)\n" +
-"BETWEEN '"+fecha+"' AND '"+fecha_Hasta+"' ORDER BY FACT.fecha_creacion DESC");
-         return consultaResusltados(sql);
+         try {
+             CallableStatement cst = conex.prepareCall("Call GEN_consultaLlenarVentaXMesXEmpresa(?,?,?)");
+             cst.setInt("idEmpresa", id_empresa);
+             cst.setObject("fechaLog", fecha);
+             cst.setObject("fechaHastaLog", fecha_Hasta);
+             cst. execute();
+             return cst.getResultSet();
+         } catch (Exception e) {
+             e.printStackTrace();
+             return null;
+         }
      }
      
       public ResultSet consultaLlenarVentaXMesXSucursal(int id_sucursal, Object fecha,Object fecha_Hasta)
      {
          //ESTA FUNCION LLENA LA TABLA DE VENTAS DIARIAS
-         sql=("SELECT DISTINCT FACT.id_sucursal,FACT.id_factura,FACT.fecha_creacion,"
-                 + "CASE WHEN MONTH(FACT.fecha_creacion)=1 THEN 'ENERO'"
-                 + " WHEN MONTH(FACT.fecha_creacion)=2 THEN 'FEBRERO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=3 THEN 'MARZO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=4 THEN 'ABRIL'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=5 THEN 'MAYO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=6 THEN 'JUNIO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=7 THEN 'JULIO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=8 THEN 'AGOSTO'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=9 THEN 'SEPTIEMBRE'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=10 THEN 'OCTUBRE'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=11 THEN 'NOVIEMBRE'"
-                 + "WHEN MONTH(FACT.fecha_creacion)=12 THEN 'DICIEMBRE' ELSE 'ESTO NO ES UN MES' END AS MESespañol,"
-                 + "FACT.total,FACT.iva,FACT.descuento FROM factura AS FACT\n" +
-"WHERE FACT.id_sucursal="+id_sucursal+" AND Date(FACT.fecha_creacion)\n" +
-"BETWEEN '"+fecha+"' AND '"+fecha_Hasta+"'");
-         return consultaResusltados(sql);
+        try {
+             CallableStatement cst = conex.prepareCall("Call GEN_consultaLlenarVentaXMesXSucursal(?,?,?)");
+             cst.setInt("idSucursal", id_sucursal);
+             cst.setObject("fechaLog", fecha);
+             cst.setObject("fechaHastaLog", fecha_Hasta);
+             cst. execute();
+             return cst.getResultSet();
+         } catch (Exception e) {
+             e.printStackTrace();
+             return null;
+         }
      }
      
     public String consultaPrimerFecha()
     {
         String fecha=null;
-        sql=("SELECT fecha_creacion FROM factura");
-        rh = consultaResusltados(sql);
-        try {
-            
+        try{
+            CallableStatement cst = conex.prepareCall("Call CON_consultaPrimerFechaFactura()");
+            cst.execute();
+            rh = cst.getResultSet();
                 if(rh.first())
                 fecha = rh.getString("fecha_creacion");
             
@@ -531,24 +609,26 @@ public class consultas_factura extends Conexion{
     
     public ResultSet consultaLlenarArticulos(Object id_factura)
     {
-        sql=("SELECT DISTINCT FACTDEC.item,PRO.nombre_producto,PRE.presentacion,MED.medicion,MARC.marca,"
-                + "FORMAT(FACTDEC.valor_unidad_producto,2),FACTDEC.cantidad_factura_detallado,FACTDEC.descuento_factura_detalle,FORMAT("
-                + "FACTDEC.subtotal_factura_detalle,2)\n" +
-",PRODIVEN.id_producto_inventario,PRODIVEN.id_producto,PRO.id_produccto,FACT.id_factura,PRO.id_medicion,PRO.id_presentacion,PRO.id_marca,PRE.id_presentacion,"
-                + "MARC.id_marca,MED.id_medicion,FACTDEC.id_factura, FACTDEC.id_producto_inventario,FACTDEC.id_factura FROM presentacion AS PRE, "
-                + "marca AS MARC, medicion AS MED, producto AS PRO, producto_inventario AS PRODIVEN ,factura AS FACT,factura_detalle AS FACTDEC "
-                + "where FACT.id_factura= "+id_factura+" AND FACTDEC.id_factura="+id_factura+" AND PRODIVEN.id_producto_inventario = FACTDEC.id_producto_inventario AND PRO.id_medicion=MED.id_medicion AND PRO.id_marca=MARC.id_marca "
-                + "AND PRO.id_presentacion = PRE.id_presentacion AND PRODIVEN.id_producto = PRO.id_produccto ORDER BY FACTDEC.item");
-        return consultaResusltados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call GEN_consultaLlenarArticulos(?)");
+            cst.setInt("idFactura", Integer.parseInt(id_factura.toString()));
+            return  cst.getResultSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public float consultaTotalFacturacion(int id_empresa,Object fecha,Object fecha_Hasta)
     {
         float total = 0;
-        sql=("SELECT FACT.total FROM factura AS FACT,sucursal AS SUC WHERE SUC.id_sucursal=FACT.id_sucursal AND SUC.id_empresa="+id_empresa+" AND "
-                + "id_factura_anulada=0 AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta +"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+            CallableStatement cst = conex.prepareCall("Call CON_consultaTotalFacturacionXEmpresa(?,?,?)");
+            cst.setInt("idEmpresa", id_empresa);
+            cst.setObject("fechaLog", fecha);
+            cst.setObject("fechaHasta", fecha_Hasta);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 total=  total +(rh.getFloat("FACT.total"));  
@@ -562,10 +642,13 @@ public class consultas_factura extends Conexion{
     public float consultaTotalIvaFacturacion(int id_empresa,Object fecha,Object fecha_Hasta)
     {
         float iva=0;
-        sql=("SELECT FACT.iva FROM factura AS FACT, sucursal AS SUC WHERE FACT.id_sucursal=SUC.id_sucursal AND SUC.id_empresa="+id_empresa+" AND "
-                + "id_factura_anulada=0 AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta +"'");
-        rh = consultaResusltados(sql);
-        try {
+     try{
+         CallableStatement cst = conex.prepareCall("Call CON_consultaTotalIvaFacturacion(?,?,?)");
+         cst.setInt("idEmpresa", id_empresa);
+         cst.setObject("fechaLog", fecha);
+         cst.setObject("fechaHasta", fecha_Hasta);
+         cst.execute();
+         rh = cst.getResultSet();
             while(rh.next())
             {
                 iva = iva+ Float.parseFloat(rh.getObject("FACT.iva").toString());
@@ -579,10 +662,13 @@ public class consultas_factura extends Conexion{
     public float consultaTotalIDescuentoFacturacion(int id_empresa,Object fecha,Object fecha_Hasta)
     {
         float descuento=0;
-        sql=("SELECT FACT.descuento FROM factura AS FACT,sucursal AS SUC WHERE FACT.id_sucursal=SUC.id_sucursal AND SUC.id_empresa="+id_empresa+" AND "
-                + "id_factura_anulada=0  AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta +"'");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+        CallableStatement cst = conex.prepareCall("Call CON_consultaTotalIDescuentoFacturacion(?,?,?)");
+        cst.setInt("idEmpresa", id_empresa);
+        cst.setObject("fechaLog", fecha);
+        cst.setObject("fechaHasta", fecha_Hasta);
+        cst.execute();
+        rh = cst.getResultSet();
             while(rh.next())
             {
                 descuento = descuento+ Float.parseFloat(rh.getObject("FACT.descuento").toString());
@@ -597,10 +683,13 @@ public class consultas_factura extends Conexion{
     public float consultaTotalIGananciaFacturacion(int id_empresa,Object fecha,Object fecha_Hasta)
     {
         float ganancia=0;
-        sql=("SELECT FACT.ganancia_factura FROM factura AS FACT,sucursal AS SUC WHERE FACT.id_sucursal=SUC.id_sucursal AND SUC.id_empresa="+id_empresa+" AND "
-                + "id_factura_anulada=0  AND DATE(FACT.fecha_creacion) BETWEEN '"+fecha+"' AND '"+fecha_Hasta +"'");
-        rh = consultaResusltados(sql);
-        try {
+        try{
+            CallableStatement cst = conex.prepareCall("Call CON_consultaTotalIGananciaFacturacion(?,?,?)");
+            cst.setInt("idEmpresa", id_empresa);
+            cst.setObject("fechaLog", fecha);
+            cst.setObject("fechaHasta", fecha_Hasta);
+            cst.execute();
+            rh = cst.getResultSet();
             while(rh.next())
             {
                 ganancia = ganancia+ (rh.getFloat("FACT.ganancia_factura"));
@@ -614,27 +703,51 @@ public class consultas_factura extends Conexion{
     
     public boolean consultaRegistrarFacturaAnulada(Object id_facctura,Object id_motivo, Object id_usuario,Object fecha, Object hora)
     {
-        sql=("INSERT INTO factura_anulada (id_factura,id_motivo_factura_anulada,id_usuario_creacion,fecha_anulacion,hora_anulacion) "
-                + "VALUES ("+id_facctura+","+id_motivo+","+id_usuario+",'"+fecha+"','"+hora+"')");
-        return insertarResultados(sql);
+        try {
+            CallableStatement cst = conex.prepareCall("Call CON_consultaRegistrarFacturaAnulada(?,?,?,?,?)");
+            cst.setInt("idFactura", Integer.parseInt(id_facctura.toString()));
+            cst.setInt("idMotivo", Integer.parseInt(id_motivo.toString()));
+            cst.setInt("idUsuario", Integer.parseInt(id_usuario.toString()));
+            cst.setObject("fechaLog", fecha);
+            cst.setObject("horaLog", hora);
+            return cst. execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
    public boolean consultaAnularFactura(Object id_facctura)
    {
-       sql=("DELETE FROM factura WHERE id_factura="+id_facctura+"");
-       return insertarResultados(sql);
+       try {
+           CallableStatement cst = conex.prepareCall("Call CON_consultaAnularFactura(?)");
+           cst.setInt("idFactura", Integer.parseInt(id_facctura.toString()));
+           return cst.execute();
+       } catch (Exception e) {
+           e.printStackTrace();
+           return false;
+       }
    }
    public ResultSet consultaMotivoAnulacion()
    {
-       sql=("SELECT motivo_anulacion FROM factura_motivo_anulacion");
-       return consultaResusltados(sql);
+       try {
+           CallableStatement cst = conex.prepareCall("Call GEN_consultaMotivoAnulacion()");
+           cst.execute();
+           rh = cst.getResultSet();
+           return rh;
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
    }
    
     public int cosultaIdMotivo(Object motivo)
     {
         int id_motivo=0;
-        sql=("SELECT id_motivo_factura_anulada FROM factura_motivo_anulacion WHERE motivo_anulacion='"+motivo+"'");
-        rh = consultaResusltados(sql);
-        try {
+       try{
+           CallableStatement cst = conex.prepareCall("Call GEN_cosultaIdMotivo(?)");
+           cst.setObject("motivo", motivo);
+           cst.execute();
+           rh = cst.getResultSet();
             while(rh.next())
             id_motivo = rh.getInt("id_motivo_factura_anulada");
             
@@ -731,3 +844,4 @@ public class consultas_factura extends Conexion{
    
     
 }
+
